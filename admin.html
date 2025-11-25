@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Hallenmeister – Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+    :root {
+        --bg: #f3f4f6;
+        --card: #ffffff;
+        --border: #e5e7eb;
+        --text: #111827;
+        --text-soft: #6b7280;
+
+        --red: #c8102e;
+        --red-soft: #fee2e2;
+        --blue: #0047ab;
+        --blue-soft: #e0edff;
+        --gold: #f7b500;
+
+        --danger: #b91c1c;
+        --danger-soft: #fef2f2;
+
+        --radius: 14px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+        font-family: "Inter", sans-serif;
+        background: radial-gradient(circle at top, #ffffff, #f3f4f6 55%);
+        margin: 0;
+        padding: 24px;
+        color: var(--text);
+    }
+
+    .app { max-width: 1150px; margin: 0 auto; }
+
+    /* ---------- HERO ---------- */
+    .hero {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 18px 22px;
+        border-radius: 20px;
+        background:
+            radial-gradient(circle at 0% 0%, rgba(247,181,0,0.30), transparent 55%),
+            linear-gradient(135deg, var(--red), var(--blue));
+        color: #ffffff;
+        box-shadow:
+            0 20px 40px rgba(148,27,63,0.35),
+            0 0 30px rgba(0,71,171,0.35);
+        margin-bottom: 26px;
+    }
+
+    .hero-left {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+    }
+
+    .logo-wrap {
+        width: 78px;
+        height: 78px;
+        border-radius: 18px;
+        padding: 6px;
+        background: #ffffff;
+        box-shadow:
+            0 12px 25px rgba(0,0,0,0.28),
+            0 0 18px rgba(247,181,0,0.7);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .logo-wrap img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        border-radius: 12px;
+    }
+
+    .hero-title {
+        font-size: 1.9rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+
+    .hero-sub {
+        font-size: 0.95rem;
+        opacity: 0.93;
+        margin-top: 2px;
+    }
+
+    .hero-pill {
+        margin-top: 10px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.78rem;
+        text-transform: uppercase;
+        letter-spacing: 0.16em;
+        padding: 6px 12px;
+        border-radius: 999px;
+        background: rgba(255,255,255,0.09);
+        border: 1px solid rgba(255,255,255,0.45);
+    }
+
+    .hero-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 999px;
+        background: #22c55e;
+        box-shadow: 0 0 10px rgba(34,197,94,0.9);
+    }
+
+    .hero-right {
+        text-align: right;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        opacity: 0.9;
+    }
+
+    .hero-right span {
+        display: inline-block;
+        padding: 4px 10px;
+        border-radius: 999px;
+        background: rgba(255,255,255,0.12);
+        border: 1px solid rgba(255,255,255,0.4);
+        margin-left: 6px;
+    }
+
+    @media (max-width: 900px) {
+        body { padding: 16px; }
+        .hero { flex-direction: column; align-items: flex-start; gap: 12px; }
+        .hero-right { text-align: left; }
+    }
+
+    /* ---------- LOCK SCREEN ---------- */
+    #lockScreen {
+        position: fixed;
+        inset: 0;
+        background: rgba(15,23,42,0.82);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+    }
+
+    #lockCard {
+        background: #111827;
+        color: #e5e7eb;
+        padding: 24px 26px;
+        border-radius: 16px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        max-width: 320px;
+        width: 100%;
+        text-align: center;
+        border: 1px solid #4b5563;
+    }
+
+    #lockCard h2 {
+        margin: 0 0 8px;
+        font-size: 1.4rem;
+    }
+
+    #lockCard p {
+        margin: 0 0 16px;
+        font-size: 0.9rem;
+        color: #9ca3af;
+    }
+
+    #lockInput {
+        width: 100%;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #4b5563;
+        background: #020617;
+        color: #e5e7eb;
+        margin-bottom: 10px;
+    }
+
+    #lockBtn {
+        width: 100%;
+        padding: 10px;
+        border-radius: 999px;
+        border: none;
+        background: linear-gradient(135deg,#22c55e,#16a34a);
+        color: #fff;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    #lockError {
+        margin-top: 8px;
+        font-size: 0.8rem;
+        color: #fca5a5;
+        min-height: 1em;
+    }
+
+    /* ---------- LAYOUT ---------- */
+    .grid {
+        display: grid;
+        grid-template-columns: 1.05fr 0.95fr;
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+
+    @media (max-width: 900px) {
+        .grid { grid-template-columns: 1fr; }
+    }
+
+    /* ---------- CARDS ---------- */
+    .card {
+        background: var(--card);
+        border-radius: var(--radius);
+        border: 1px solid var(--border);
+        padding: 18px 20px;
+        box-shadow: 0 10px 26px rgba(15,23,42,0.08);
+    }
+
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        margin-bottom: 10px;
+    }
+
+    .card-title {
+        font-size: 1rem;
+        font-weight: 600;
+    }
+
+    .card-hint {
+        font-size: 0.8rem;
+        color: var(--text-soft);
+    }
+
+    .card-body {
+        font-size: 0.9rem;
+    }
+
+    /* ---------- FORM ---------- */
+    input, select {
+        padding: 9px 11px;
+        border-radius: 9px;
+        border: 1px solid var(--border);
+        width: 100%;
+        font-size: 0.9rem;
+        margin: 4px 0;
+        outline: none;
+        background: #f9fafb;
+        color: var(--text);
+        transition: border 0.15s, box-shadow 0.15s, background 0.15s;
+    }
+
+    input::placeholder {
+        color: #9ca3af;
+    }
+
+    input:focus, select:focus {
+        border-color: var(--blue);
+        background: #ffffff;
+        box-shadow: 0 0 0 1px var(--blue-soft);
+    }
+
+    .field-row {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-bottom: 8px;
+    }
+
+    .field-row > * {
+        flex: 1 1 140px;
+    }
+
+    /* ---------- BUTTONS ---------- */
+    button {
+        padding: 9px 16px;
+        border-radius: 999px;
+        border: none;
+        cursor: pointer;
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin-right: 8px;
+        margin-top: 6px;
+        transition: background 0.15s, box-shadow 0.15s, transform 0.05s;
+    }
+
+    .btn-main {
+        background: linear-gradient(135deg, var(--blue), var(--red));
+        color: #ffffff;
+        box-shadow: 0 6px 16px rgba(15,23,42,0.28);
+    }
+
+    .btn-main:hover {
+        box-shadow: 0 10px 22px rgba(15,23,42,0.35);
+        transform: translateY(-1px);
+    }
+
+    .btn-main:active {
+        transform: translateY(1px);
+        box-shadow: 0 3px 10px rgba(15,23,42,0.28);
+    }
+
+    .btn-soft {
+        background: #f3f4f6;
+        color: #111827;
+    }
+
+    .btn-soft:hover {
+        background: #e5e7eb;
+    }
+
+    .btn-danger {
+        background: var(--danger-soft);
+        color: var(--danger);
+        border: 1px solid #fecaca;
+    }
+
+    .btn-danger:hover {
+        background: #fecaca;
+    }
+
+    details {
+        margin-top: 8px;
+    }
+
+    details summary {
+        cursor: pointer;
+        font-size: 0.85rem;
+        color: var(--text-soft);
+        list-style: none;
+    }
+
+    details summary::marker,
+    details summary::-webkit-details-marker {
+        display: none;
+    }
+
+    details summary::before {
+        content: "▸";
+        display: inline-block;
+        margin-right: 6px;
+        font-size: 0.7rem;
+    }
+
+    details[open] summary::before { content: "▾"; }
+
+    /* ---------- TABELLE ---------- */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        border-radius: 12px;
+        overflow: hidden;
+        table-layout: fixed;
+    }
+
+    th, td {
+        padding: 10px 8px;
+        border-bottom: 1px solid #e5e7eb;
+        text-align: center;
+        vertical-align: middle;
+        font-size: 0.9rem;
+    }
+
+    th {
+        background: linear-gradient(90deg, var(--blue-soft), #ffffff);
+        font-weight: 600;
+        color: #4b5563;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        letter-spacing: 0.06em;
+    }
+
+    th:nth-child(2), td:nth-child(2) {
+        text-align: left;
+        padding-left: 14px;
+    }
+
+    tbody tr:nth-child(even) {
+        background: #f9fafb;
+    }
+
+    tbody tr:hover {
+        background: #e0edff;
+    }
+
+    tr.gold   { background: #fef9c3; }
+    tr.silver { background: #e5e7eb; }
+    tr.bronze { background: #fee2e2; }
+
+    /* ---------- LOGS ---------- */
+    #logBox {
+        background: #f9fafb;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        padding: 10px 12px;
+        height: 160px;
+        overflow-y: auto;
+        white-space: pre-wrap;
+        font-size: 0.85rem;
+        color: var(--text-soft);
+    }
+</style>
+</head>
+
+<body>
+<div id="lockScreen">
+    <div id="lockCard">
+        <h2>Admin Login</h2>
+        <p>Bitte Admin-Passwort eingeben, um die Hallenmeister-Verwaltung zu öffnen.</p>
+        <input id="lockInput" type="password" placeholder="Passwort">
+        <button id="lockBtn">Entsperren</button>
+        <div id="lockError"></div>
+    </div>
+</div>
+
+<div class="app" id="app" style="display:none">
+
+    <header class="hero">
+        <div class="hero-left">
+            <div class="logo-wrap">
+                <img src="logo.png" alt="JFG Oßkathen Süd Logo">
+            </div>
+            <div>
+                <div class="hero-title">JFG Gäuboden-Süd</div>
+                <div class="hero-sub">Hallenmeister · Adminbereich</div>
+                <div class="hero-pill">
+                    <span class="hero-dot"></span>
+                    Sieg 3 · Unentschieden 1 · Tor 1 · Vorlage 1
+                </div>
+            </div>
+        </div>
+        <div class="hero-right">
+            <span>Admin</span>
+            <span>Schreibrechte</span>
+        </div>
+    </header>
+
+    <div class="grid">
+        <!-- SPIELER HINZUFÜGEN -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">Spieler hinzufügen</div>
+            </div>
+            <div class="card-body">
+                <input id="playerName" type="text" placeholder="Spielername">
+                <button class="btn-main" onclick="addPlayer()">Hinzufügen</button>
+            </div>
+        </div>
+
+        <!-- SPIELER VERWALTEN -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">Spieler verwalten</div>
+            </div>
+            <div class="card-body">
+                <select id="managePlayer"></select>
+                <div>
+                    <button class="btn-soft" onclick="renamePlayer()">Umbenennen</button>
+                    <button class="btn-danger" onclick="deletePlayer()">Löschen</button>
+                </div>
+
+                <details>
+                    <summary>Erweiterte Optionen</summary>
+                    <div style="margin-top:6px;">
+                        <button class="btn-danger" onclick="resetLogs()">Logs löschen</button>
+                        <button class="btn-danger" onclick="fullReset()">Datenbank leeren</button>
+                    </div>
+                </details>
+            </div>
+        </div>
+    </div>
+
+    <!-- SPIEL EINTRAGEN -->
+    <div class="card">
+        <div class="card-header">
+            <div class="card-title">Spiel eintragen</div>
+            <div class="card-hint">Änderungen werden live an die öffentliche Seite übertragen.</div>
+        </div>
+        <div class="card-body">
+            <div class="field-row">
+                <select id="matchPlayer"></select>
+                <select id="result">
+                    <option value="g">Sieg</option>
+                    <option value="u">Unentschieden</option>
+                    <option value="v">Niederlage</option>
+                </select>
+            </div>
+            <div class="field-row">
+                <input id="goals" type="number" placeholder="Tore">
+                <input id="assists" type="number" placeholder="Vorlagen">
+            </div>
+            <div>
+                <button class="btn-main" onclick="enterMatch()">Eintragen</button>
+                <button class="btn-soft" onclick="undoLast()">Rückgängig</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TABELLE -->
+    <div class="card">
+        <div class="card-header">
+            <div class="card-title">Tabelle (Admin-Ansicht)</div>
+        </div>
+        <table id="table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Spieler</th>
+                    <th>Punkte</th>
+                    <th>S</th>
+                    <th>U</th>
+                    <th>N</th>
+                    <th>Tore</th>
+                    <th>Vorlagen</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <!-- LOGS -->
+    <div class="card">
+        <div class="card-header">
+            <div class="card-title">Logs</div>
+        </div>
+        <div id="logBox"></div>
+    </div>
+
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+    const ADMIN_PASSWORD = "1234";
+    let unlocked = false;
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD6e3gVyYhC3XGr0fXnbONltHaQXITsPW8",
+      authDomain: "hallenmeister-jfg.firebaseapp.com",
+      databaseURL: "https://hallenmeister-jfg-default-rtdb.firebaseio.com",
+      projectId: "hallenmeister-jfg",
+      storageBucket: "hallenmeister-jfg.firebasestorage.app",
+      messagingSenderId: "116609969538",
+      appId: "1:116609969538:web:e00d5b82ac49609aae339b",
+      measurementId: "G-ZTY1D51LGK"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db  = getDatabase(app);
+
+    const playersRef = ref(db, "players");
+    const logsRef    = ref(db, "logs");
+
+    let players = {};
+    let logs    = [];
+    let historyStack = [];
+
+    // Live-Daten – laufen schon, aber UI bleibt gesperrt bis Passwort ok ist
+    onValue(playersRef, snap => {
+        players = snap.val() || {};
+        updateDropdowns();
+        updateTable();
+    });
+
+    onValue(logsRef, snap => {
+        logs = snap.val() || [];
+        updateLogs();
+    });
+
+    function saveAll() {
+        if (!unlocked) return;
+        set(playersRef, players);
+        set(logsRef, logs);
+    }
+
+    // ---- Lock Screen ----
+    const lockInput = document.getElementById("lockInput");
+    const lockBtn   = document.getElementById("lockBtn");
+    const lockError = document.getElementById("lockError");
+    const lockScreen = document.getElementById("lockScreen");
+    const appDiv     = document.getElementById("app");
+
+    lockBtn.addEventListener("click", tryUnlock);
+    lockInput.addEventListener("keydown", e => {
+        if (e.key === "Enter") tryUnlock();
+    });
+
+    function tryUnlock() {
+        const val = lockInput.value;
+        if (val === ADMIN_PASSWORD) {
+            unlocked = true;
+            lockScreen.style.display = "none";
+            appDiv.style.display = "block";
+        } else {
+            lockError.textContent = "Falsches Passwort.";
+            lockInput.value = "";
+            lockInput.focus();
+        }
+    }
+
+    // ===== SPIELER HINZUFÜGEN =====
+    window.addPlayer = function() {
+        if (!unlocked) return alert("Keine Admin-Rechte.");
+        const nameEl = document.getElementById("playerName");
+        const name = nameEl.value.trim();
+        if (!name) return;
+
+        if (!players[name]) {
+            historyStack.push(JSON.parse(JSON.stringify(players)));
+
+            players[name] = {
+                points: 0,
+                wins: 0,
+                draws: 0,
+                losses: 0,
+                goals: 0,
+                assists: 0
+            };
+
+            logs.push("➕ Spieler hinzugefügt: " + name);
+            saveAll();
+        }
+        nameEl.value = "";
+    };
+
+    // ===== SPIEL EINTRAGEN =====
+    window.enterMatch = function() {
+        if (!unlocked) return alert("Keine Admin-Rechte.");
+        const name   = document.getElementById("matchPlayer").value;
+        const result = document.getElementById("result").value;
+        const g      = parseInt(document.getElementById("goals").value)   || 0;
+        const a      = parseInt(document.getElementById("assists").value) || 0;
+
+        if (!name) return;
+
+        historyStack.push(JSON.parse(JSON.stringify(players)));
+
+        let p = players[name];
+        let log = name + ": ";
+
+        if (result === "g") {
+            p.points += 3;
+            p.wins++;
+            log += "Sieg ";
+        } else if (result === "u") {
+            p.points += 1;
+            p.draws++;
+            log += "Unentschieden ";
+        } else {
+            p.losses++;
+            log += "Niederlage ";
+        }
+
+        p.goals   += g;
+        p.assists += a;
+        p.points  += g + a;
+
+        logs.push(`[+] ${log}(Tore: ${g}, Vorlagen: ${a})`);
+
+        saveAll();
+
+        document.getElementById("goals").value   = "";
+        document.getElementById("assists").value = "";
+    };
+
+    // ===== UNDO =====
+    window.undoLast = function() {
+        if (!unlocked) return alert("Keine Admin-Rechte.");
+        if (historyStack.length === 0) {
+            alert("Nichts zum Rückgängig machen!");
+            return;
+        }
+        players = historyStack.pop();
+        logs.push("↩ Rückgängig");
+        saveAll();
+    };
+
+    // ===== SPIELER LÖSCHEN =====
+    window.deletePlayer = function() {
+        if (!unlocked) return alert("Keine Admin-Rechte.");
+        const name = document.getElementById("managePlayer").value;
+        if (!name) return;
+        if (!confirm(`Spieler "${name}" löschen?`)) return;
+
+        historyStack.push(JSON.parse(JSON.stringify(players)));
+        delete players[name];
+        logs.push("🗑 Spieler gelöscht: " + name);
+        saveAll();
+    };
+
+    // ===== SPIELER UMBENENNEN =====
+    window.renamePlayer = function() {
+        if (!unlocked) return alert("Keine Admin-Rechte.");
+        const oldName = document.getElementById("managePlayer").value;
+        if (!oldName) return;
+
+        const neu = prompt("Neuer Name:", oldName);
+        if (!neu || players[neu]) return;
+
+        historyStack.push(JSON.parse(JSON.stringify(players)));
+        players[neu] = players[oldName];
+        delete players[oldName];
+        logs.push(`✏ Umbenannt: ${oldName} → ${neu}`);
+        saveAll();
+    };
+
+    // ===== LOGS LÖSCHEN =====
+    window.resetLogs = function() {
+        if (!unlocked) return alert("Keine Admin-Rechte.");
+        if (!confirm("Nur Logs löschen? Daten bleiben.")) return;
+        logs = [];
+        saveAll();
+    };
+
+    // ===== ALLES LÖSCHEN =====
+    window.fullReset = function() {
+        if (!unlocked) return alert("Keine Admin-Rechte.");
+        if (!confirm("Wirklich komplette Datenbank leeren?")) return;
+        players = {};
+        logs = [];
+        historyStack = [];
+        saveAll();
+    };
+
+    // ===== UI =====
+    function updateDropdowns() {
+        const mp  = document.getElementById("matchPlayer");
+        const man = document.getElementById("managePlayer");
+        mp.innerHTML  = "";
+        man.innerHTML = "";
+        Object.keys(players).forEach(name => {
+            mp.innerHTML  += `<option>${name}</option>`;
+            man.innerHTML += `<option>${name}</option>`;
+        });
+    }
+
+    function updateTable() {
+        const tbody = document.querySelector("#table tbody");
+        tbody.innerHTML = "";
+        const sorted = Object.entries(players)
+            .sort((a,b) => b[1].points - a[1].points);
+
+        sorted.forEach(([name,p], index) => {
+            let cls = "";
+            if (index === 0) cls = "gold";
+            else if (index === 1) cls = "silver";
+            else if (index === 2) cls = "bronze";
+
+            tbody.innerHTML += `
+            <tr class="${cls}">
+                <td>${index + 1}</td>
+                <td>${name}</td>
+                <td>${p.points}</td>
+                <td>${p.wins}</td>
+                <td>${p.draws}</td>
+                <td>${p.losses}</td>
+                <td>${p.goals}</td>
+                <td>${p.assists}</td>
+            </tr>`;
+        });
+    }
+
+    function updateLogs() {
+        document.getElementById("logBox").textContent = logs.join("\n");
+    }
+</script>
+
+</body>
+</html>
