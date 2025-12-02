@@ -58,19 +58,15 @@
         background:rgba(255,255,255,0.09);border:1px solid rgba(255,255,255,0.45);
     }
     .hero-dot{width:7px;height:7px;border-radius:999px;background:#22c55e;box-shadow:0 0 10px rgba(34,197,94,0.9);}
-    .hero-right{text-align:right;font-size:0.8rem;text-transform:uppercase;letter-spacing:0.14em;opacity:0.9;}
-    .hero-right span{display:inline-block;padding:4px 10px;border-radius:999px;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.4);margin-left:6px;}
-    @media(max-width:900px){body{padding:16px}.hero{flex-direction:column;align-items:flex-start;gap:12px}.hero-right{text-align:left}}
 
+    /* CARD */
     .card{
         background:var(--card);border-radius:var(--radius);
         border:1px solid var(--border);padding:18px 20px;
         box-shadow:0 10px 26px rgba(15,23,42,0.08);
     }
-    .card-header{margin-bottom:10px;}
-    .card-title{font-size:1rem;font-weight:600;}
-    .card-hint{font-size:0.8rem;color:var(--text-soft);}
 
+    /* TABLE */
     table{width:100%;border-collapse:collapse;border-radius:12px;overflow:hidden;table-layout:fixed;}
     th,td{padding:10px 8px;border-bottom:1px solid #e5e7eb;text-align:center;vertical-align:middle;font-size:.9rem;}
     th{
@@ -80,16 +76,11 @@
     th:nth-child(2),td:nth-child(2){text-align:left;padding-left:14px;}
     tbody tr:nth-child(even){background:#f9fafb;}
     tbody tr:hover{background:#e0edff;}
+
     tr.gold{background:#fef9c3;}
     tr.silver{background:#e5e7eb;}
     tr.bronze{background:#fee2e2;}
 
-    #logBox{
-        margin-top:14px;
-        background:#f9fafb;border-radius:8px;border:1px solid var(--border);
-        padding:10px 12px;height:140px;overflow-y:auto;white-space:pre-wrap;
-        font-size:.84rem;color:var(--text-soft);
-    }
 </style>
 </head>
 
@@ -106,19 +97,13 @@
                 <div class="hero-sub">Hallenmeister · Live-Tabelle</div>
                 <div class="hero-pill">
                     <span class="hero-dot"></span>
-                    Stand wird automatisch aktualisiert
+                    Live aktualisiert
                 </div>
             </div>
-        </div>
-        <div class="hero-right">
         </div>
     </header>
 
     <div class="card">
-        <div class="card-header">
-            <div class="card-title">Tabelle</div>
-            <div class="card-hint">Die Werte aktualisieren sich automatisch, sobald der Admin etwas einträgt.</div>
-        </div>
 
         <table id="table">
             <thead>
@@ -129,74 +114,69 @@
                     <th>S</th>
                     <th>U</th>
                     <th>N</th>
+                    <th>Spiele</th>
                     <th>Tore</th>
-                    <th>Vorlagen</th>
                 </tr>
             </thead>
             <tbody></tbody>
         </table>
 
-        <div id="logBox"></div>
     </div>
 
 </div>
 
 <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyD6e3gVyYhC3XGr0fXnbONltHaQXITsPW8",
-      authDomain: "hallenmeister-jfg.firebaseapp.com",
-      databaseURL: "https://hallenmeister-jfg-default-rtdb.firebaseio.com",
-      projectId: "hallenmeister-jfg",
-      storageBucket: "hallenmeister-jfg.firebasestorage.app",
-      messagingSenderId: "116609969538",
-      appId: "1:116609969538:web:e00d5b82ac49609aae339b",
-      measurementId: "G-ZTY1D51LGK"
-    };
+const firebaseConfig = {
+  apiKey: "AIzaSyD6e3gVyYhC3XGr0fXnbONltHaQXITsPW8",
+  authDomain: "hallenmeister-jfg.firebaseapp.com",
+  databaseURL: "https://hallenmeister-jfg-default-rtdb.firebaseio.com",
+  projectId: "hallenmeister-jfg",
+  storageBucket: "hallenmeister-jfg.firebasestorage.app",
+  messagingSenderId: "116609969538",
+  appId: "1:116609969538:web:e00d5b82ac49609aae339b"
+};
 
-    const app = initializeApp(firebaseConfig);
-    const db  = getDatabase(app);
+const app = initializeApp(firebaseConfig);
+const db  = getDatabase(app);
 
-    const playersRef = ref(db, "players");
-    const logsRef    = ref(db, "logs");
+const playersRef = ref(db, "players");
 
-    onValue(playersRef, snap => {
-        const players = snap.val() || {};
-        updateTable(players);
+onValue(playersRef, snap => {
+    const players = snap.val() || {};
+    updateTable(players);
+});
+
+function updateTable(players){
+    const tbody = document.querySelector("#table tbody");
+    tbody.innerHTML = "";
+
+    const sorted = Object.entries(players)
+        .sort((a,b) => b[1].points - a[1].points);
+
+    sorted.forEach(([name,p], index) => {
+        let cls = "";
+        if(index === 0) cls = "gold";
+        else if(index === 1) cls = "silver";
+        else if(index === 2) cls = "bronze";
+
+        const spiele = (p.wins || 0) + (p.draws || 0) + (p.losses || 0);
+
+        tbody.innerHTML += `
+        <tr class="${cls}">
+            <td>${index+1}</td>
+            <td>${name}${p.team ? " <span style='color:#6b7280'>( "+p.team+" )</span>" : ""}</td>
+            <td>${p.points}</td>
+            <td>${p.wins}</td>
+            <td>${p.draws}</td>
+            <td>${p.losses}</td>
+            <td>${spiele}</td>
+            <td>${p.goals}</td>
+        </tr>`;
     });
-
-    onValue(logsRef, snap => {
-        const logs = snap.val() || [];
-        document.getElementById("logBox").textContent = logs.join("\n");
-    });
-
-    function updateTable(players){
-        const tbody = document.querySelector("#table tbody");
-        tbody.innerHTML = "";
-        const sorted = Object.entries(players)
-            .sort((a,b) => b[1].points - a[1].points);
-
-        sorted.forEach(([name,p], index) => {
-            let cls = "";
-            if(index === 0) cls = "gold";
-            else if(index === 1) cls = "silver";
-            else if(index === 2) cls = "bronze";
-
-            tbody.innerHTML += `
-            <tr class="${cls}">
-                <td>${index+1}</td>
-                <td>${name}</td>
-                <td>${p.points}</td>
-                <td>${p.wins}</td>
-                <td>${p.draws}</td>
-                <td>${p.losses}</td>
-                <td>${p.goals}</td>
-                <td>${p.assists}</td>
-            </tr>`;
-        });
-    }
+}
 </script>
 
 </body>
