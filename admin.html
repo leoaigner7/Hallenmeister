@@ -2,6 +2,7 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Hallenmeister – Admin</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
@@ -220,6 +221,7 @@
         border: 1px solid var(--border);
         padding: 18px 20px;
         box-shadow: 0 10px 26px rgba(15,23,42,0.08);
+        margin-bottom: 18px;
     }
 
     .card-header {
@@ -425,7 +427,7 @@
     <header class="hero">
         <div class="hero-left">
             <div class="logo-wrap">
-                <img src="logo.png" alt="JFG Oßkathen Süd Logo">
+                <img src="logo.png" alt="JFG Gäuboden-Süd Logo">
             </div>
             <div>
                 <div class="hero-title">JFG Gäuboden-Süd</div>
@@ -438,10 +440,10 @@
         </div>
         <div class="hero-right">
             <span>Admin</span>
-            <span>Schreibrechte</span>
         </div>
     </header>
 
+    <!-- SPIELER / TEAMS GRID -->
     <div class="grid">
         <!-- SPIELER HINZUFÜGEN -->
         <div class="card">
@@ -450,6 +452,9 @@
             </div>
             <div class="card-body">
                 <input id="playerName" type="text" placeholder="Spielername">
+                <select id="playerTeamSelect">
+                    <option value="">(ohne Team)</option>
+                </select>
                 <button class="btn-main" onclick="addPlayer()">Hinzufügen</button>
             </div>
         </div>
@@ -461,7 +466,13 @@
             </div>
             <div class="card-body">
                 <select id="managePlayer"></select>
+                <div class="field-row">
+                    <select id="managePlayerTeam">
+                        <option value="">(kein Team)</option>
+                    </select>
+                </div>
                 <div>
+                    <button class="btn-soft" onclick="updatePlayerTeam()">Team setzen</button>
                     <button class="btn-soft" onclick="renamePlayer()">Umbenennen</button>
                     <button class="btn-danger" onclick="deletePlayer()">Löschen</button>
                 </div>
@@ -477,27 +488,62 @@
         </div>
     </div>
 
-    <!-- SPIEL EINTRAGEN -->
+    <!-- TEAMS VERWALTEN -->
     <div class="card">
         <div class="card-header">
-            <div class="card-title">Spiel eintragen</div>
-            <div class="card-hint">Änderungen werden live an die öffentliche Seite übertragen.</div>
+            <div class="card-title">Teams verwalten</div>
         </div>
         <div class="card-body">
             <div class="field-row">
-                <select id="matchPlayer"></select>
-                <select id="result">
-                    <option value="g">Sieg</option>
-                    <option value="u">Unentschieden</option>
-                    <option value="v">Niederlage</option>
+                <input id="teamName" type="text" placeholder="Teamname">
+                <button class="btn-main" onclick="addTeam()">Team hinzufügen</button>
+            </div>
+            <div class="field-row">
+                <select id="manageTeam"></select>
+            </div>
+            <div>
+                <button class="btn-soft" onclick="renameTeam()">Team umbenennen</button>
+                <button class="btn-danger" onclick="deleteTeam()">Team löschen</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TEAM-ERGEBNIS EINTRAGEN -->
+    <div class="card">
+        <div class="card-header">
+            <div class="card-title">Team-Ergebnis eintragen</div>
+            <div class="card-hint">Wirkt sich auf S/U/N und Punkte aller Spieler dieses Teams aus.</div>
+        </div>
+        <div class="card-body">
+            <div class="field-row">
+                <select id="teamResultSelect">
+                    <option value="">Team auswählen</option>
                 </select>
+            </div>
+            <div>
+                <button class="btn-main" onclick="applyTeamResult('g')">Sieg (+3 pro Spieler)</button>
+                <button class="btn-soft" onclick="applyTeamResult('u')">Unentschieden (+1 pro Spieler)</button>
+                <button class="btn-danger" onclick="applyTeamResult('v')">Niederlage (0 Punkte)</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TORE & VORLAGEN -->
+    <div class="card">
+        <div class="card-header">
+            <div class="card-title">Tore & Vorlagen eintragen</div>
+            <div class="card-hint">Wirkt nur auf Tore/Vorlagen/Punkte des Spielers, nicht auf S/U/N.</div>
+        </div>
+        <div class="card-body">
+            <div class="field-row">
+                <select id="statPlayer"></select>
             </div>
             <div class="field-row">
                 <input id="goals" type="number" placeholder="Tore">
                 <input id="assists" type="number" placeholder="Vorlagen">
             </div>
             <div>
-                <button class="btn-main" onclick="enterMatch()">Eintragen</button>
+                <button class="btn-main" onclick="addStats()">Eintragen</button>
                 <button class="btn-soft" onclick="undoLast()">Rückgängig</button>
             </div>
         </div>
@@ -558,14 +604,24 @@
 
     const playersRef = ref(db, "players");
     const logsRef    = ref(db, "logs");
+    const teamsRef   = ref(db, "teams");
 
     let players = {};
     let logs    = [];
+    let teams   = {};
     let historyStack = [];
 
-    // Live-Daten – laufen schon, aber UI bleibt gesperrt bis Passwort ok ist
+    // Live-Daten
     onValue(playersRef, snap => {
         players = snap.val() || {};
+
+        // alte Spieler ohne team-Feld behalten, aber lokal team="" ergänzen
+        Object.keys(players).forEach(name => {
+            if (players[name].team === undefined) {
+                players[name].team = "";
+            }
+        });
+
         updateDropdowns();
         updateTable();
     });
@@ -575,16 +631,22 @@
         updateLogs();
     });
 
+    onValue(teamsRef, snap => {
+        teams = snap.val() || {};
+        updateTeamUI();
+    });
+
     function saveAll() {
         if (!unlocked) return;
         set(playersRef, players);
         set(logsRef, logs);
+        set(teamsRef, teams);
     }
 
     // ---- Lock Screen ----
-    const lockInput = document.getElementById("lockInput");
-    const lockBtn   = document.getElementById("lockBtn");
-    const lockError = document.getElementById("lockError");
+    const lockInput  = document.getElementById("lockInput");
+    const lockBtn    = document.getElementById("lockBtn");
+    const lockError  = document.getElementById("lockError");
     const lockScreen = document.getElementById("lockScreen");
     const appDiv     = document.getElementById("app");
 
@@ -606,97 +668,37 @@
         }
     }
 
-    // ===== SPIELER HINZUFÜGEN =====
+    /* ================= SPIELER ================= */
+
     window.addPlayer = function() {
         if (!unlocked) return alert("Keine Admin-Rechte.");
+
         const nameEl = document.getElementById("playerName");
+        const teamSel = document.getElementById("playerTeamSelect");
         const name = nameEl.value.trim();
+        const team = teamSel.value || "";
+
         if (!name) return;
 
         if (!players[name]) {
             historyStack.push(JSON.parse(JSON.stringify(players)));
 
             players[name] = {
-                points: 0,
-                wins: 0,
-                draws: 0,
+                points: players[name]?.points || 0,
+                wins:   0,
+                draws:  0,
                 losses: 0,
-                goals: 0,
-                assists: 0
+                goals:  0,
+                assists:0,
+                team: team
             };
 
-            logs.push("➕ Spieler hinzugefügt: " + name);
+            logs.push("➕ Spieler hinzugefügt: " + name + (team ? " (" + team + ")" : ""));
             saveAll();
         }
         nameEl.value = "";
     };
 
-    // ===== SPIEL EINTRAGEN =====
-    window.enterMatch = function() {
-        if (!unlocked) return alert("Keine Admin-Rechte.");
-        const name   = document.getElementById("matchPlayer").value;
-        const result = document.getElementById("result").value;
-        const g      = parseInt(document.getElementById("goals").value)   || 0;
-        const a      = parseInt(document.getElementById("assists").value) || 0;
-
-        if (!name) return;
-
-        historyStack.push(JSON.parse(JSON.stringify(players)));
-
-        let p = players[name];
-        let log = name + ": ";
-
-        if (result === "g") {
-            p.points += 3;
-            p.wins++;
-            log += "Sieg ";
-        } else if (result === "u") {
-            p.points += 1;
-            p.draws++;
-            log += "Unentschieden ";
-        } else {
-            p.losses++;
-            log += "Niederlage ";
-        }
-
-        p.goals   += g;
-        p.assists += a;
-        p.points  += g + a;
-
-        logs.push(`[+] ${log}(Tore: ${g}, Vorlagen: ${a})`);
-
-        saveAll();
-
-        document.getElementById("goals").value   = "";
-        document.getElementById("assists").value = "";
-    };
-
-    // ===== UNDO =====
-    window.undoLast = function() {
-        if (!unlocked) return alert("Keine Admin-Rechte.");
-        if (historyStack.length === 0) {
-            alert("Nichts zum Rückgängig machen!");
-            return;
-        }
-        players = historyStack.pop();
-        logs.push("↩ Rückgängig");
-        saveAll();
-    };
-
-    // ===== SPIELER LÖSCHEN =====
-    window.deletePlayer = function() {
-        if (!unlocked) return alert("Keine Admin-Rechte.");
-        const name = document.getElementById("managePlayer").value;
-        if (!name) return;
-        if (!confirm(`Spieler "${name}" löschen?`)) return;
-
-        historyStack.push(JSON.parse(JSON.stringify(players)));
-        delete players[name];
-        logs.push("🗑 Spieler gelöscht: " + name);
-        saveAll();
-    };
-
-    // ===== SPIELER UMBENENNEN =====
     window.renamePlayer = function() {
         if (!unlocked) return alert("Keine Admin-Rechte.");
         const oldName = document.getElementById("managePlayer").value;
@@ -712,7 +714,185 @@
         saveAll();
     };
 
-    // ===== LOGS LÖSCHEN =====
+    window.deletePlayer = function() {
+        if (!unlocked) return alert("Keine Admin-Rechte.");
+        const name = document.getElementById("managePlayer").value;
+        if (!name) return;
+        if (!confirm(`Spieler "${name}" löschen?`)) return;
+
+        historyStack.push(JSON.parse(JSON.stringify(players)));
+        delete players[name];
+        logs.push("🗑 Spieler gelöscht: " + name);
+        saveAll();
+    };
+
+    window.updatePlayerTeam = function() {
+        if (!unlocked) return alert("Keine Admin-Rechte.");
+        const name = document.getElementById("managePlayer").value;
+        const team = document.getElementById("managePlayerTeam").value || "";
+        if (!name) return;
+
+        historyStack.push(JSON.parse(JSON.stringify(players)));
+        players[name].team = team;
+        logs.push(`👕 Team geändert: ${name} → ${team || "kein Team"}`);
+        saveAll();
+    };
+
+    /* ================= TEAMS ================= */
+
+    function updateTeamUI() {
+        const teamSelectPlayer = document.getElementById("playerTeamSelect");
+        const teamSelectResult = document.getElementById("teamResultSelect");
+        const manageTeamSel    = document.getElementById("manageTeam");
+        const managePlayerTeam = document.getElementById("managePlayerTeam");
+
+        if (teamSelectPlayer) {
+            teamSelectPlayer.innerHTML = '<option value="">(ohne Team)</option>';
+        }
+        if (teamSelectResult) {
+            teamSelectResult.innerHTML = '<option value="">Team auswählen</option>';
+        }
+        if (manageTeamSel) {
+            manageTeamSel.innerHTML = "";
+        }
+        if (managePlayerTeam) {
+            managePlayerTeam.innerHTML = '<option value="">(kein Team)</option>';
+        }
+
+        Object.keys(teams).forEach(t => {
+            if (teamSelectPlayer) teamSelectPlayer.innerHTML += `<option value="${t}">${t}</option>`;
+            if (teamSelectResult) teamSelectResult.innerHTML += `<option value="${t}">${t}</option>`;
+            if (manageTeamSel)    manageTeamSel.innerHTML    += `<option value="${t}">${t}</option>`;
+            if (managePlayerTeam) managePlayerTeam.innerHTML += `<option value="${t}">${t}</option>`;
+        });
+    }
+
+    window.addTeam = function() {
+        if (!unlocked) return alert("Keine Admin-Rechte.");
+        const nameEl = document.getElementById("teamName");
+        const name = nameEl.value.trim();
+        if (!name || teams[name]) return;
+
+        historyStack.push(JSON.parse(JSON.stringify(players)));
+        teams[name] = true;
+        logs.push("🏟️ Team hinzugefügt: " + name);
+        saveAll();
+        nameEl.value = "";
+    };
+
+    window.renameTeam = function() {
+        if (!unlocked) return alert("Keine Admin-Rechte.");
+        const oldName = document.getElementById("manageTeam").value;
+        if (!oldName) return;
+
+        const neu = prompt("Neuer Teamname:", oldName);
+        if (!neu || teams[neu]) return;
+
+        historyStack.push(JSON.parse(JSON.stringify(players)));
+
+        // Teams-Objekt umbenennen
+        delete teams[oldName];
+        teams[neu] = true;
+
+        // alle Spieler, die dieses Team hatten, anpassen
+        Object.keys(players).forEach(name => {
+            if (players[name].team === oldName) {
+                players[name].team = neu;
+            }
+        });
+
+        logs.push(`🏟️ Team umbenannt: ${oldName} → ${neu}`);
+        saveAll();
+    };
+
+    window.deleteTeam = function() {
+        if (!unlocked) return alert("Keine Admin-Rechte.");
+        const name = document.getElementById("manageTeam").value;
+        if (!name) return;
+        if (!confirm(`Team "${name}" löschen? Spieler bleiben, verlieren aber ihre Teamzuordnung.`)) return;
+
+        historyStack.push(JSON.parse(JSON.stringify(players)));
+
+        delete teams[name];
+
+        // Spieler-Teamzuordnung entfernen
+        Object.keys(players).forEach(p => {
+            if (players[p].team === name) {
+                players[p].team = "";
+            }
+        });
+
+        logs.push("🗑 Team gelöscht: " + name);
+        saveAll();
+    };
+
+    /* ================= TEAM-ERGEBNIS ================= */
+
+    window.applyTeamResult = function(result) {
+        if (!unlocked) return alert("Keine Admin-Rechte.");
+        const team = document.getElementById("teamResultSelect").value;
+        if (!team) return;
+
+        historyStack.push(JSON.parse(JSON.stringify(players)));
+
+        let affected = 0;
+        Object.keys(players).forEach(name => {
+            const p = players[name];
+            if (p.team === team) {
+                if (result === "g") {
+                    p.wins++;
+                    p.points += 3;
+                } else if (result === "u") {
+                    p.draws++;
+                    p.points += 1;
+                } else if (result === "v") {
+                    p.losses++;
+                }
+                affected++;
+            }
+        });
+
+        const resText = result === "g" ? "Sieg" : result === "u" ? "Unentschieden" : "Niederlage";
+        logs.push(`⚽ Team-Ergebnis: ${team} → ${resText} (Spieler betroffen: ${affected})`);
+        saveAll();
+    };
+
+    /* ================= TORE / VORLAGEN ================= */
+
+    window.addStats = function() {
+        if (!unlocked) return alert("Keine Admin-Rechte.");
+        const name = document.getElementById("statPlayer").value;
+        const g = parseInt(document.getElementById("goals").value)   || 0;
+        const a = parseInt(document.getElementById("assists").value) || 0;
+        if (!name || (g === 0 && a === 0)) return;
+
+        historyStack.push(JSON.parse(JSON.stringify(players)));
+
+        const p = players[name];
+        p.goals   += g;
+        p.assists += a;
+        p.points  += g + a;
+
+        logs.push(`[+] Stats: ${name} (Tore: ${g}, Vorlagen: ${a})`);
+        saveAll();
+
+        document.getElementById("goals").value = "";
+        document.getElementById("assists").value = "";
+    };
+
+    /* ================= UNDO / LOGS / TABLE ================= */
+
+    window.undoLast = function() {
+        if (!unlocked) return alert("Keine Admin-Rechte.");
+        if (historyStack.length === 0) {
+            alert("Nichts zum Rückgängig machen!");
+            return;
+        }
+        players = historyStack.pop();
+        logs.push("↩ Rückgängig");
+        saveAll();
+    };
+
     window.resetLogs = function() {
         if (!unlocked) return alert("Keine Admin-Rechte.");
         if (!confirm("Nur Logs löschen? Daten bleiben.")) return;
@@ -720,25 +900,26 @@
         saveAll();
     };
 
-    // ===== ALLES LÖSCHEN =====
     window.fullReset = function() {
         if (!unlocked) return alert("Keine Admin-Rechte.");
         if (!confirm("Wirklich komplette Datenbank leeren?")) return;
         players = {};
         logs = [];
+        teams = {};
         historyStack = [];
         saveAll();
     };
 
-    // ===== UI =====
     function updateDropdowns() {
-        const mp  = document.getElementById("matchPlayer");
-        const man = document.getElementById("managePlayer");
-        mp.innerHTML  = "";
-        man.innerHTML = "";
+        const managePlayerSel = document.getElementById("managePlayer");
+        const statPlayerSel   = document.getElementById("statPlayer");
+
+        managePlayerSel.innerHTML = "";
+        statPlayerSel.innerHTML   = "";
+
         Object.keys(players).forEach(name => {
-            mp.innerHTML  += `<option>${name}</option>`;
-            man.innerHTML += `<option>${name}</option>`;
+            managePlayerSel.innerHTML += `<option value="${name}">${name}</option>`;
+            statPlayerSel.innerHTML   += `<option value="${name}">${name}</option>`;
         });
     }
 
@@ -757,13 +938,13 @@
             tbody.innerHTML += `
             <tr class="${cls}">
                 <td>${index + 1}</td>
-                <td>${name}</td>
-                <td>${p.points}</td>
-                <td>${p.wins}</td>
-                <td>${p.draws}</td>
-                <td>${p.losses}</td>
-                <td>${p.goals}</td>
-                <td>${p.assists}</td>
+                <td>${name}${p.team ? " ("+p.team+")" : ""}</td>
+                <td>${p.points || 0}</td>
+                <td>${p.wins   || 0}</td>
+                <td>${p.draws  || 0}</td>
+                <td>${p.losses || 0}</td>
+                <td>${p.goals  || 0}</td>
+                <td>${p.assists|| 0}</td>
             </tr>`;
         });
     }
