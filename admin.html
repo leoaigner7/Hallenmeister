@@ -15,7 +15,6 @@
         --text-soft: #6b7280;
 
         --red: #c8102e;
-        --red-soft: #fee2e2;
         --blue: #0047ab;
         --blue-soft: #e0edff;
         --gold: #f7b500;
@@ -25,8 +24,6 @@
 
         --radius: 14px;
     }
-
-    * { box-sizing: border-box; }
 
     body {
         font-family: "Inter", sans-serif;
@@ -38,109 +35,7 @@
 
     .app { max-width: 1150px; margin: 0 auto; }
 
-    /* ---------- HERO ---------- */
-    .hero {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 18px 22px;
-        border-radius: 20px;
-        background:
-            radial-gradient(circle at 0% 0%, rgba(247,181,0,0.30), transparent 55%),
-            linear-gradient(135deg, var(--red), var(--blue));
-        color: #ffffff;
-        box-shadow:
-            0 20px 40px rgba(148,27,63,0.35),
-            0 0 30px rgba(0,71,171,0.35);
-        margin-bottom: 26px;
-    }
-
-    .hero-left {
-        display: flex;
-        align-items: center;
-        gap: 18px;
-    }
-
-    .logo-wrap {
-        width: 78px;
-        height: 78px;
-        border-radius: 18px;
-        padding: 6px;
-        background: #ffffff;
-        box-shadow:
-            0 12px 25px rgba(0,0,0,0.28),
-            0 0 18px rgba(247,181,0,0.7);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .logo-wrap img {
-        max-width: 100%;
-        max-height: 100%;
-        object-fit: contain;
-        border-radius: 12px;
-    }
-
-    .hero-title {
-        font-size: 1.9rem;
-        font-weight: 700;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-    }
-
-    .hero-sub {
-        font-size: 0.95rem;
-        opacity: 0.93;
-        margin-top: 2px;
-    }
-
-    .hero-pill {
-        margin-top: 10px;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 0.78rem;
-        text-transform: uppercase;
-        letter-spacing: 0.16em;
-        padding: 6px 12px;
-        border-radius: 999px;
-        background: rgba(255,255,255,0.09);
-        border: 1px solid rgba(255,255,255,0.45);
-    }
-
-    .hero-dot {
-        width: 7px;
-        height: 7px;
-        border-radius: 999px;
-        background: #22c55e;
-        box-shadow: 0 0 10px rgba(34,197,94,0.9);
-    }
-
-    .hero-right {
-        text-align: right;
-        font-size: 0.8rem;
-        text-transform: uppercase;
-        letter-spacing: 0.14em;
-        opacity: 0.9;
-    }
-
-    .hero-right span {
-        display: inline-block;
-        padding: 4px 10px;
-        border-radius: 999px;
-        background: rgba(255,255,255,0.12);
-        border: 1px solid rgba(255,255,255,0.4);
-        margin-left: 6px;
-    }
-
-    @media (max-width: 900px) {
-        body { padding: 16px; }
-        .hero { flex-direction: column; align-items: flex-start; gap: 12px; }
-        .hero-right { text-align: left; }
-    }
-
-    /* ---------- LOCK SCREEN ---------- */
+    /* --- LOCKSCREEN --- */
     #lockScreen {
         position: fixed;
         inset: 0;
@@ -156,32 +51,19 @@
         color: #e5e7eb;
         padding: 24px 26px;
         border-radius: 16px;
-        box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-        max-width: 320px;
         width: 100%;
+        max-width: 320px;
         text-align: center;
-        border: 1px solid #4b5563;
-    }
-
-    #lockCard h2 {
-        margin: 0 0 8px;
-        font-size: 1.4rem;
-    }
-
-    #lockCard p {
-        margin: 0 0 16px;
-        font-size: 0.9rem;
-        color: #9ca3af;
     }
 
     #lockInput {
         width: 100%;
         padding: 10px;
         border-radius: 8px;
+        margin-bottom: 10px;
         border: 1px solid #4b5563;
         background: #020617;
         color: #e5e7eb;
-        margin-bottom: 10px;
     }
 
     #lockBtn {
@@ -195,127 +77,74 @@
         cursor: pointer;
     }
 
-    #lockError {
-        margin-top: 8px;
-        font-size: 0.8rem;
-        color: #fca5a5;
-        min-height: 1em;
-    }
-
-    /* ---------- LAYOUT ---------- */
-    .grid {
-        display: grid;
-        grid-template-columns: 1.05fr 0.95fr;
-        gap: 20px;
-        margin-bottom: 20px;
-    }
-
-    @media (max-width: 900px) {
-        .grid { grid-template-columns: 1fr; }
-    }
-
-    /* ---------- CARDS ---------- */
-    .card {
-        background: var(--card);
-        border-radius: var(--radius);
-        border: 1px solid var(--border);
-        padding: 18px 20px;
-        box-shadow: 0 10px 26px rgba(15,23,42,0.08);
-        margin-bottom: 18px;
-    }
-
-    .card-header {
+    /* --- HERO HEADER --- */
+    .hero {
         display: flex;
         justify-content: space-between;
-        align-items: baseline;
-        margin-bottom: 10px;
+        padding: 18px 22px;
+        border-radius: 20px;
+        background: linear-gradient(135deg, var(--red), var(--blue));
+        color: white;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        margin-bottom: 26px;
     }
 
-    .card-title {
-        font-size: 1rem;
-        font-weight: 600;
-    }
-
-    .card-hint {
-        font-size: 0.8rem;
-        color: var(--text-soft);
-    }
-
-    .card-body {
-        font-size: 0.9rem;
-    }
-
-    /* ---------- FORM ---------- */
-    input, select {
-        padding: 9px 11px;
-        border-radius: 9px;
-        border: 1px solid var(--border);
-        width: 100%;
-        font-size: 0.9rem;
-        margin: 4px 0;
-        outline: none;
-        background: #f9fafb;
-        color: var(--text);
-        transition: border 0.15s, box-shadow 0.15s, background 0.15s;
-    }
-
-    input::placeholder {
-        color: #9ca3af;
-    }
-
-    input:focus, select:focus {
-        border-color: var(--blue);
+    .logo-wrap {
+        width: 78px;
+        height: 78px;
+        border-radius: 18px;
+        padding: 6px;
         background: #ffffff;
-        box-shadow: 0 0 0 1px var(--blue-soft);
+        box-shadow: 0 12px 25px rgba(0,0,0,0.28);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .logo-wrap img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+
+    /* --- CARDS --- */
+    .card {
+        background: white;
+        border-radius: 14px;
+        border: 1px solid #e5e7eb;
+        padding: 18px 20px;
+        margin-bottom: 16px;
+        box-shadow: 0 10px 26px rgba(15,23,42,0.08);
     }
 
     .field-row {
         display: flex;
         gap: 8px;
         flex-wrap: wrap;
-        margin-bottom: 8px;
     }
 
-    .field-row > * {
-        flex: 1 1 140px;
+    input, select {
+        width: 100%;
+        padding: 9px 11px;
+        border-radius: 9px;
+        border: 1px solid #ddd;
+        background: #f9fafb;
+        font-size: 0.9rem;
     }
 
-    /* ---------- BUTTONS ---------- */
     button {
         padding: 9px 16px;
         border-radius: 999px;
         border: none;
-        cursor: pointer;
-        font-size: 0.9rem;
         font-weight: 600;
-        margin-right: 8px;
+        cursor: pointer;
         margin-top: 6px;
-        transition: background 0.15s, box-shadow 0.15s, transform 0.05s;
+        margin-right: 6px;
     }
 
     .btn-main {
         background: linear-gradient(135deg, var(--blue), var(--red));
-        color: #ffffff;
-        box-shadow: 0 6px 16px rgba(15,23,42,0.28);
-    }
-
-    .btn-main:hover {
-        box-shadow: 0 10px 22px rgba(15,23,42,0.35);
-        transform: translateY(-1px);
-    }
-
-    .btn-main:active {
-        transform: translateY(1px);
-        box-shadow: 0 3px 10px rgba(15,23,42,0.28);
-    }
-
-    .btn-soft {
-        background: #f3f4f6;
-        color: #111827;
-    }
-
-    .btn-soft:hover {
-        background: #e5e7eb;
+        color: white;
     }
 
     .btn-danger {
@@ -324,635 +153,404 @@
         border: 1px solid #fecaca;
     }
 
-    .btn-danger:hover {
-        background: #fecaca;
-    }
-
-    details {
-        margin-top: 8px;
-    }
-
-    details summary {
-        cursor: pointer;
-        font-size: 0.85rem;
-        color: var(--text-soft);
-        list-style: none;
-    }
-
-    details summary::marker,
-    details summary::-webkit-details-marker {
-        display: none;
-    }
-
-    details summary::before {
-        content: "▸";
-        display: inline-block;
-        margin-right: 6px;
-        font-size: 0.7rem;
-    }
-
-    details[open] summary::before { content: "▾"; }
-
-    /* ---------- TABELLE ---------- */
+    /* --- TABLE --- */
     table {
         width: 100%;
         border-collapse: collapse;
-        border-radius: 12px;
-        overflow: hidden;
         table-layout: fixed;
+        overflow: hidden;
+        border-radius: 12px;
     }
 
     th, td {
         padding: 10px 8px;
-        border-bottom: 1px solid #e5e7eb;
         text-align: center;
-        vertical-align: middle;
-        font-size: 0.9rem;
+        border-bottom: 1px solid #eee;
     }
 
     th {
-        background: linear-gradient(90deg, var(--blue-soft), #ffffff);
+        background: #eef2ff;
         font-weight: 600;
-        color: #4b5563;
-        text-transform: uppercase;
-        font-size: 0.75rem;
-        letter-spacing: 0.06em;
     }
 
-    th:nth-child(2), td:nth-child(2) {
-        text-align: left;
-        padding-left: 14px;
-    }
-
-    tbody tr:nth-child(even) {
-        background: #f9fafb;
-    }
-
-    tbody tr:hover {
-        background: #e0edff;
-    }
-
-    tr.gold   { background: #fef9c3; }
+    tr.gold   { background: #fff7b0; }
     tr.silver { background: #e5e7eb; }
-    tr.bronze { background: #fee2e2; }
-
-    /* ---------- LOGS ---------- */
-    #logBox {
-        background: #f9fafb;
-        border-radius: 8px;
-        border: 1px solid var(--border);
-        padding: 10px 12px;
-        height: 160px;
-        overflow-y: auto;
-        white-space: pre-wrap;
-        font-size: 0.85rem;
-        color: var(--text-soft);
-    }
+    tr.bronze { background: #ffd7c2; }
 </style>
 </head>
 
 <body>
+
+<!-- LOCKSCREEN -->
 <div id="lockScreen">
     <div id="lockCard">
         <h2>Admin Login</h2>
-        <p>Bitte Admin-Passwort eingeben, um die Hallenmeister-Verwaltung zu öffnen.</p>
-        <input id="lockInput" type="password" placeholder="Passwort">
+        <p>Passwort eingeben:</p>
+        <input id="lockInput" type="password">
         <button id="lockBtn">Entsperren</button>
         <div id="lockError"></div>
     </div>
 </div>
 
-<div class="app" id="app" style="display:none">
+<div id="app" class="app" style="display:none">
 
-    <header class="hero">
-        <div class="hero-left">
-            <div class="logo-wrap">
-                <img src="logo.png" alt="JFG Gäuboden-Süd Logo">
-            </div>
-            <div>
-                <div class="hero-title">JFG Gäuboden-Süd</div>
-                <div class="hero-sub">Hallenmeister · Adminbereich</div>
-                <div class="hero-pill">
-                    <span class="hero-dot"></span>
-                    Sieg 3 · Unentschieden 1 · Tor 1 · Vorlage 1
-                </div>
-            </div>
+<header class="hero">
+    <div style="display:flex; gap:18px; align-items:center;">
+        <div class="logo-wrap">
+            <img src="logo.png">
         </div>
-        <div class="hero-right">
-            <span>Admin</span>
-        </div>
-    </header>
-
-    <!-- SPIELER / TEAMS GRID -->
-    <div class="grid">
-        <!-- SPIELER HINZUFÜGEN -->
-        <div class="card">
-            <div class="card-header">
-                <div class="card-title">Spieler hinzufügen</div>
-            </div>
-            <div class="card-body">
-                <input id="playerName" type="text" placeholder="Spielername">
-                <select id="playerTeamSelect">
-                    <option value="">(ohne Team)</option>
-                </select>
-                <button class="btn-main" onclick="addPlayer()">Hinzufügen</button>
-            </div>
-        </div>
-
-        <!-- SPIELER VERWALTEN -->
-        <div class="card">
-            <div class="card-header">
-                <div class="card-title">Spieler verwalten</div>
-            </div>
-            <div class="card-body">
-                <select id="managePlayer"></select>
-                <div class="field-row">
-                    <select id="managePlayerTeam">
-                        <option value="">(kein Team)</option>
-                    </select>
-                </div>
-                <div>
-                    <button class="btn-soft" onclick="updatePlayerTeam()">Team setzen</button>
-                    <button class="btn-soft" onclick="renamePlayer()">Umbenennen</button>
-                    <button class="btn-danger" onclick="deletePlayer()">Löschen</button>
-                </div>
-
-                <details>
-                    <summary>Erweiterte Optionen</summary>
-                    <div style="margin-top:6px;">
-                        <button class="btn-danger" onclick="resetLogs()">Logs löschen</button>
-                        <button class="btn-danger" onclick="fullReset()">Datenbank leeren</button>
-                    </div>
-                </details>
-            </div>
+        <div>
+            <h1>Hallenmeister Admin</h1>
+            <small>Sieg 3 · Unentschieden 1 · Tor 1</small>
         </div>
     </div>
+    <div style="font-size:0.85rem; opacity:0.8">ADMIN</div>
+</header>
 
-    <!-- TEAMS VERWALTEN -->
-    <div class="card">
-        <div class="card-header">
-            <div class="card-title">Teams verwalten</div>
-        </div>
-        <div class="card-body">
-            <div class="field-row">
-                <input id="teamName" type="text" placeholder="Teamname">
-                <button class="btn-main" onclick="addTeam()">Team hinzufügen</button>
-            </div>
-            <div class="field-row">
-                <select id="manageTeam"></select>
-            </div>
-            <div>
-                <button class="btn-soft" onclick="renameTeam()">Team umbenennen</button>
-                <button class="btn-danger" onclick="deleteTeam()">Team löschen</button>
-            </div>
-        </div>
+<!-- PLAYER ADD -->
+<div class="card">
+    <h3>Spieler hinzufügen</h3>
+    <div class="field-row">
+        <input id="playerName" placeholder="Spielername">
+        <select id="playerTeamSelect"><option value="">(kein Team)</option></select>
     </div>
-
-    <!-- TEAM-ERGEBNIS EINTRAGEN -->
-    <div class="card">
-        <div class="card-header">
-            <div class="card-title">Team-Ergebnis eintragen</div>
-            <div class="card-hint">Wirkt sich auf S/U/N und Punkte aller Spieler dieses Teams aus.</div>
-        </div>
-        <div class="card-body">
-            <div class="field-row">
-                <select id="teamResultSelect">
-                    <option value="">Team auswählen</option>
-                </select>
-            </div>
-            <div>
-                <button class="btn-main" onclick="applyTeamResult('g')">Sieg (+3 pro Spieler)</button>
-                <button class="btn-soft" onclick="applyTeamResult('u')">Unentschieden (+1 pro Spieler)</button>
-                <button class="btn-danger" onclick="applyTeamResult('v')">Niederlage (0 Punkte)</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- TORE & VORLAGEN -->
-    <div class="card">
-        <div class="card-header">
-            <div class="card-title">Tore & Vorlagen eintragen</div>
-            <div class="card-hint">Wirkt nur auf Tore/Vorlagen/Punkte des Spielers, nicht auf S/U/N.</div>
-        </div>
-        <div class="card-body">
-            <div class="field-row">
-                <select id="statPlayer"></select>
-            </div>
-            <div class="field-row">
-                <input id="goals" type="number" placeholder="Tore">
-                <input id="assists" type="number" placeholder="Vorlagen">
-            </div>
-            <div>
-                <button class="btn-main" onclick="addStats()">Eintragen</button>
-                <button class="btn-soft" onclick="undoLast()">Rückgängig</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- TABELLE -->
-    <div class="card">
-        <div class="card-header">
-            <div class="card-title">Tabelle (Admin-Ansicht)</div>
-        </div>
-        <table id="table">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Spieler</th>
-                    <th>Punkte</th>
-                    <th>S</th>
-                    <th>U</th>
-                    <th>N</th>
-                    <th>Tore</th>
-                    <th>Vorlagen</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
-    </div>
-
-    <!-- LOGS -->
-    <div class="card">
-        <div class="card-header">
-            <div class="card-title">Logs</div>
-        </div>
-        <div id="logBox"></div>
-    </div>
-
+    <button class="btn-main" onclick="addPlayer()">Hinzufügen</button>
 </div>
 
+<!-- PLAYER MANAGE -->
+<div class="card">
+    <h3>Spieler verwalten</h3>
+    <select id="managePlayer"></select>
+
+    <div class="field-row">
+        <select id="managePlayerTeam"><option value="">(kein Team)</option></select>
+    </div>
+
+    <button class="btn-main" onclick="updatePlayerTeam()">Team setzen</button>
+    <button class="btn-main" onclick="renamePlayer()">Umbenennen</button>
+    <button class="btn-danger" onclick="deletePlayer()">Löschen</button>
+</div>
+
+<!-- TEAMS -->
+<div class="card">
+    <h3>Teams verwalten</h3>
+    <div class="field-row">
+        <input id="teamName" placeholder="Teamname">
+        <button class="btn-main" onclick="addTeam()">Team hinzufügen</button>
+    </div>
+
+    <select id="manageTeam"></select>
+    <button class="btn-main" onclick="renameTeam()">Umbenennen</button>
+    <button class="btn-danger" onclick="deleteTeam()">Team löschen</button>
+</div>
+
+<!-- TEAM RESULT -->
+<div class="card">
+    <h3>Team-Ergebnis eintragen</h3>
+
+    <select id="teamResultSelect"><option value="">Team wählen</option></select>
+
+    <button class="btn-main" onclick="applyTeamResult('g')">Sieg (+3)</button>
+    <button class="btn-main" onclick="applyTeamResult('u')">Unentschieden (+1)</button>
+    <button class="btn-danger" onclick="applyTeamResult('v')">Niederlage</button>
+</div>
+
+<!-- STATS -->
+<div class="card">
+    <h3>Tore eintragen</h3>
+
+    <select id="statPlayer"></select>
+    <input id="goals" type="number" placeholder="Tore">
+
+    <button class="btn-main" onclick="addStats()">Eintragen</button>
+    <button class="btn-danger" onclick="undoLast()">Rückgängig</button>
+</div>
+    <!-- TABLE -->
+<div class="card">
+    <h3>Tabelle</h3>
+    <table id="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Spieler</th>
+                <th>Punkte</th>
+                <th>S</th>
+                <th>U</th>
+                <th>N</th>
+                <th>Spiele</th>
+                <th>Tore</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+<!-- LOGS -->
+<div class="card">
+    <h3>Logs</h3>
+    <pre id="logBox"></pre>
+</div>
+
+</div><!-- app -->
+
 <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-    const ADMIN_PASSWORD = "1234";
-    let unlocked = false;
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyD6e3gVyYhC3XGr0fXnbONltHaQXITsPW8",
-      authDomain: "hallenmeister-jfg.firebaseapp.com",
-      databaseURL: "https://hallenmeister-jfg-default-rtdb.firebaseio.com",
-      projectId: "hallenmeister-jfg",
-      storageBucket: "hallenmeister-jfg.firebasestorage.app",
-      messagingSenderId: "116609969538",
-      appId: "1:116609969538:web:e00d5b82ac49609aae339b",
-      measurementId: "G-ZTY1D51LGK"
+const ADMIN_PASSWORD = "1234";
+
+let unlocked = false;
+let players = {};
+let teams = {};
+let logs = [];
+let historyStack = [];
+
+const firebaseConfig = {
+  apiKey: "AIzaSyD6e3gVyYhC3XGr0fXnbONltHaQXITsPW8",
+  authDomain: "hallenmeister-jfg.firebaseapp.com",
+  databaseURL: "https://hallenmeister-jfg-default-rtdb.firebaseio.com",
+  projectId: "hallenmeister-jfg",
+  storageBucket: "hallenmeister-jfg.firebasestorage.app",
+  messagingSenderId: "116609969538",
+  appId: "1:116609969538:web:e00d5b82ac49609aae339b",
+  measurementId: "G-ZTY1D51LGK"
+};
+
+const app = initializeApp(firebaseConfig);
+const db  = getDatabase(app);
+
+const playersRef = ref(db, "players");
+const teamsRef   = ref(db, "teams");
+const logsRef    = ref(db, "logs");
+
+onValue(playersRef, snap => {
+    players = snap.val() || {};
+    updateDropdowns();
+    updateTable();
+});
+
+onValue(teamsRef, snap => {
+    teams = snap.val() || {};
+    updateTeamUI();
+});
+
+onValue(logsRef, snap => {
+    logs = snap.val() || [];
+    updateLogs();
+});
+
+function saveAll() {
+    if (!unlocked) return;
+    set(playersRef, players);
+    set(teamsRef, teams);
+    set(logsRef, logs);
+}
+
+/* LOGIN */
+lockBtn.onclick = () => {
+    if (lockInput.value === ADMIN_PASSWORD) {
+        unlocked = true;
+        lockScreen.style.display = "none";
+        app.style.display = "block";
+    } else {
+        lockError.textContent = "Falsches Passwort.";
+    }
+};
+
+/* ==== PLAYER ==== */
+window.addPlayer = function() {
+    if (!unlocked) return;
+
+    const name  = playerName.value.trim();
+    const team  = playerTeamSelect.value;
+
+    if (!name || players[name]) return;
+
+    players[name] = {
+        points: 0,
+        wins: 0,
+        draws: 0,
+        losses: 0,
+        goals: 0,
+        team: team || ""
     };
 
-    const app = initializeApp(firebaseConfig);
-    const db  = getDatabase(app);
+    logs.push(`➕ Spieler hinzugefügt: ${name}`);
+    saveAll();
+    playerName.value = "";
+};
 
-    const playersRef = ref(db, "players");
-    const logsRef    = ref(db, "logs");
-    const teamsRef   = ref(db, "teams");
+window.renamePlayer = function() {
+    if (!unlocked) return;
 
-    let players = {};
-    let logs    = [];
-    let teams   = {};
-    let historyStack = [];
+    const oldName = managePlayer.value;
+    const neu = prompt("Neuer Name:", oldName);
+    if (!neu || players[neu]) return;
 
-    // Live-Daten
-    onValue(playersRef, snap => {
-        players = snap.val() || {};
+    players[neu] = players[oldName];
+    delete players[oldName];
 
-        // alte Spieler ohne team-Feld behalten, aber lokal team="" ergänzen
-        Object.keys(players).forEach(name => {
-            if (players[name].team === undefined) {
-                players[name].team = "";
-            }
-        });
+    logs.push(`✏ Umbenannt: ${oldName} → ${neu}`);
+    saveAll();
+};
 
-        updateDropdowns();
-        updateTable();
+window.deletePlayer = function() {
+    if (!unlocked) return;
+    const name = managePlayer.value;
+    if (!name || !confirm("Spieler löschen?")) return;
+
+    delete players[name];
+    logs.push(`🗑 Spieler gelöscht: ${name}`);
+    saveAll();
+};
+
+window.updatePlayerTeam = function() {
+    if (!unlocked) return;
+
+    const name = managePlayer.value;
+    const team = managePlayerTeam.value;
+
+    players[name].team = team;
+    logs.push(`👕 Team gesetzt: ${name} → ${team}`);
+    saveAll();
+};
+
+/* ==== TEAMS ==== */
+window.addTeam = function() {
+    const name = teamName.value.trim();
+    if (!name || teams[name]) return;
+    teams[name] = true;
+    logs.push(`🏟️ Team hinzugefügt: ${name}`);
+    saveAll();
+    teamName.value = "";
+};
+
+window.renameTeam = function() {
+    const old = manageTeam.value;
+    const neu = prompt("Neuer Name:", old);
+    if (!neu || teams[neu]) return;
+
+    delete teams[old];
+    teams[neu] = true;
+
+    Object.keys(players).forEach(p => {
+        if (players[p].team === old) players[p].team = neu;
     });
 
-    onValue(logsRef, snap => {
-        logs = snap.val() || [];
-        updateLogs();
+    logs.push(`🏟️ Team umbenannt: ${old} → ${neu}`);
+    saveAll();
+};
+
+window.deleteTeam = function() {
+    const name = manageTeam.value;
+    if (!confirm("Team löschen? Spieler behalten ihr Team nicht.")) return;
+
+    delete teams[name];
+    Object.keys(players).forEach(p => {
+        if (players[p].team === name) players[p].team = "";
     });
 
-    onValue(teamsRef, snap => {
-        teams = snap.val() || {};
-        updateTeamUI();
+    logs.push(`🗑 Team gelöscht: ${name}`);
+    saveAll();
+};
+
+/* ==== TEAM RESULT ==== */
+window.applyTeamResult = function(result) {
+    const team = teamResultSelect.value;
+    if (!team) return;
+
+    Object.keys(players).forEach(p => {
+        if (players[p].team === team) {
+            if (result === "g") {
+                players[p].wins++;
+                players[p].points += 3;
+            } else if (result === "u") {
+                players[p].draws++;
+                players[p].points += 1;
+            } else {
+                players[p].losses++;
+            }
+        }
     });
 
-    function saveAll() {
-        if (!unlocked) return;
-        set(playersRef, players);
-        set(logsRef, logs);
-        set(teamsRef, teams);
-    }
+    logs.push(`⚽ Team-Ergebnis: ${team} → ${result}`);
+    saveAll();
+};
 
-    // ---- Lock Screen ----
-    const lockInput  = document.getElementById("lockInput");
-    const lockBtn    = document.getElementById("lockBtn");
-    const lockError  = document.getElementById("lockError");
-    const lockScreen = document.getElementById("lockScreen");
-    const appDiv     = document.getElementById("app");
+/* ==== GOALS ONLY ==== */
+window.addStats = function() {
+    const name = statPlayer.value;
+    const g = parseInt(goals.value) || 0;
+    if (!name || g === 0) return;
 
-    lockBtn.addEventListener("click", tryUnlock);
-    lockInput.addEventListener("keydown", e => {
-        if (e.key === "Enter") tryUnlock();
-    });
+    players[name].goals += g;
+    players[name].points += g;
 
-    function tryUnlock() {
-        const val = lockInput.value;
-        if (val === ADMIN_PASSWORD) {
-            unlocked = true;
-            lockScreen.style.display = "none";
-            appDiv.style.display = "block";
-        } else {
-            lockError.textContent = "Falsches Passwort.";
-            lockInput.value = "";
-            lockInput.focus();
-        }
-    }
+    logs.push(`⚽ Tore: ${name} → +${g}`);
+    saveAll();
 
-    /* ================= SPIELER ================= */
+    goals.value = "";
+};
 
-    window.addPlayer = function() {
-        if (!unlocked) return alert("Keine Admin-Rechte.");
+/* ==== TABLE ==== */
+function updateTable() {
+    const tbody = document.querySelector("#table tbody");
+    tbody.innerHTML = "";
 
-        const nameEl = document.getElementById("playerName");
-        const teamSel = document.getElementById("playerTeamSelect");
-        const name = nameEl.value.trim();
-        const team = teamSel.value || "";
+    const sorted = Object.entries(players)
+        .sort((a,b) => b[1].points - a[1].points);
 
-        if (!name) return;
+    sorted.forEach(([name,p], idx) => {
+        const spiele = p.wins + p.draws + p.losses;
 
-        if (!players[name]) {
-            historyStack.push(JSON.parse(JSON.stringify(players)));
-
-            players[name] = {
-                points: players[name]?.points || 0,
-                wins:   0,
-                draws:  0,
-                losses: 0,
-                goals:  0,
-                assists:0,
-                team: team
-            };
-
-            logs.push("➕ Spieler hinzugefügt: " + name + (team ? " (" + team + ")" : ""));
-            saveAll();
-        }
-        nameEl.value = "";
-    };
-
-    window.renamePlayer = function() {
-        if (!unlocked) return alert("Keine Admin-Rechte.");
-        const oldName = document.getElementById("managePlayer").value;
-        if (!oldName) return;
-
-        const neu = prompt("Neuer Name:", oldName);
-        if (!neu || players[neu]) return;
-
-        historyStack.push(JSON.parse(JSON.stringify(players)));
-        players[neu] = players[oldName];
-        delete players[oldName];
-        logs.push(`✏ Umbenannt: ${oldName} → ${neu}`);
-        saveAll();
-    };
-
-    window.deletePlayer = function() {
-        if (!unlocked) return alert("Keine Admin-Rechte.");
-        const name = document.getElementById("managePlayer").value;
-        if (!name) return;
-        if (!confirm(`Spieler "${name}" löschen?`)) return;
-
-        historyStack.push(JSON.parse(JSON.stringify(players)));
-        delete players[name];
-        logs.push("🗑 Spieler gelöscht: " + name);
-        saveAll();
-    };
-
-    window.updatePlayerTeam = function() {
-        if (!unlocked) return alert("Keine Admin-Rechte.");
-        const name = document.getElementById("managePlayer").value;
-        const team = document.getElementById("managePlayerTeam").value || "";
-        if (!name) return;
-
-        historyStack.push(JSON.parse(JSON.stringify(players)));
-        players[name].team = team;
-        logs.push(`👕 Team geändert: ${name} → ${team || "kein Team"}`);
-        saveAll();
-    };
-
-    /* ================= TEAMS ================= */
-
-    function updateTeamUI() {
-        const teamSelectPlayer = document.getElementById("playerTeamSelect");
-        const teamSelectResult = document.getElementById("teamResultSelect");
-        const manageTeamSel    = document.getElementById("manageTeam");
-        const managePlayerTeam = document.getElementById("managePlayerTeam");
-
-        if (teamSelectPlayer) {
-            teamSelectPlayer.innerHTML = '<option value="">(ohne Team)</option>';
-        }
-        if (teamSelectResult) {
-            teamSelectResult.innerHTML = '<option value="">Team auswählen</option>';
-        }
-        if (manageTeamSel) {
-            manageTeamSel.innerHTML = "";
-        }
-        if (managePlayerTeam) {
-            managePlayerTeam.innerHTML = '<option value="">(kein Team)</option>';
-        }
-
-        Object.keys(teams).forEach(t => {
-            if (teamSelectPlayer) teamSelectPlayer.innerHTML += `<option value="${t}">${t}</option>`;
-            if (teamSelectResult) teamSelectResult.innerHTML += `<option value="${t}">${t}</option>`;
-            if (manageTeamSel)    manageTeamSel.innerHTML    += `<option value="${t}">${t}</option>`;
-            if (managePlayerTeam) managePlayerTeam.innerHTML += `<option value="${t}">${t}</option>`;
-        });
-    }
-
-    window.addTeam = function() {
-        if (!unlocked) return alert("Keine Admin-Rechte.");
-        const nameEl = document.getElementById("teamName");
-        const name = nameEl.value.trim();
-        if (!name || teams[name]) return;
-
-        historyStack.push(JSON.parse(JSON.stringify(players)));
-        teams[name] = true;
-        logs.push("🏟️ Team hinzugefügt: " + name);
-        saveAll();
-        nameEl.value = "";
-    };
-
-    window.renameTeam = function() {
-        if (!unlocked) return alert("Keine Admin-Rechte.");
-        const oldName = document.getElementById("manageTeam").value;
-        if (!oldName) return;
-
-        const neu = prompt("Neuer Teamname:", oldName);
-        if (!neu || teams[neu]) return;
-
-        historyStack.push(JSON.parse(JSON.stringify(players)));
-
-        // Teams-Objekt umbenennen
-        delete teams[oldName];
-        teams[neu] = true;
-
-        // alle Spieler, die dieses Team hatten, anpassen
-        Object.keys(players).forEach(name => {
-            if (players[name].team === oldName) {
-                players[name].team = neu;
-            }
-        });
-
-        logs.push(`🏟️ Team umbenannt: ${oldName} → ${neu}`);
-        saveAll();
-    };
-
-    window.deleteTeam = function() {
-        if (!unlocked) return alert("Keine Admin-Rechte.");
-        const name = document.getElementById("manageTeam").value;
-        if (!name) return;
-        if (!confirm(`Team "${name}" löschen? Spieler bleiben, verlieren aber ihre Teamzuordnung.`)) return;
-
-        historyStack.push(JSON.parse(JSON.stringify(players)));
-
-        delete teams[name];
-
-        // Spieler-Teamzuordnung entfernen
-        Object.keys(players).forEach(p => {
-            if (players[p].team === name) {
-                players[p].team = "";
-            }
-        });
-
-        logs.push("🗑 Team gelöscht: " + name);
-        saveAll();
-    };
-
-    /* ================= TEAM-ERGEBNIS ================= */
-
-    window.applyTeamResult = function(result) {
-        if (!unlocked) return alert("Keine Admin-Rechte.");
-        const team = document.getElementById("teamResultSelect").value;
-        if (!team) return;
-
-        historyStack.push(JSON.parse(JSON.stringify(players)));
-
-        let affected = 0;
-        Object.keys(players).forEach(name => {
-            const p = players[name];
-            if (p.team === team) {
-                if (result === "g") {
-                    p.wins++;
-                    p.points += 3;
-                } else if (result === "u") {
-                    p.draws++;
-                    p.points += 1;
-                } else if (result === "v") {
-                    p.losses++;
-                }
-                affected++;
-            }
-        });
-
-        const resText = result === "g" ? "Sieg" : result === "u" ? "Unentschieden" : "Niederlage";
-        logs.push(`⚽ Team-Ergebnis: ${team} → ${resText} (Spieler betroffen: ${affected})`);
-        saveAll();
-    };
-
-    /* ================= TORE / VORLAGEN ================= */
-
-    window.addStats = function() {
-        if (!unlocked) return alert("Keine Admin-Rechte.");
-        const name = document.getElementById("statPlayer").value;
-        const g = parseInt(document.getElementById("goals").value)   || 0;
-        const a = parseInt(document.getElementById("assists").value) || 0;
-        if (!name || (g === 0 && a === 0)) return;
-
-        historyStack.push(JSON.parse(JSON.stringify(players)));
-
-        const p = players[name];
-        p.goals   += g;
-        p.assists += a;
-        p.points  += g + a;
-
-        logs.push(`[+] Stats: ${name} (Tore: ${g}, Vorlagen: ${a})`);
-        saveAll();
-
-        document.getElementById("goals").value = "";
-        document.getElementById("assists").value = "";
-    };
-
-    /* ================= UNDO / LOGS / TABLE ================= */
-
-    window.undoLast = function() {
-        if (!unlocked) return alert("Keine Admin-Rechte.");
-        if (historyStack.length === 0) {
-            alert("Nichts zum Rückgängig machen!");
-            return;
-        }
-        players = historyStack.pop();
-        logs.push("↩ Rückgängig");
-        saveAll();
-    };
-
-    window.resetLogs = function() {
-        if (!unlocked) return alert("Keine Admin-Rechte.");
-        if (!confirm("Nur Logs löschen? Daten bleiben.")) return;
-        logs = [];
-        saveAll();
-    };
-
-    window.fullReset = function() {
-        if (!unlocked) return alert("Keine Admin-Rechte.");
-        if (!confirm("Wirklich komplette Datenbank leeren?")) return;
-        players = {};
-        logs = [];
-        teams = {};
-        historyStack = [];
-        saveAll();
-    };
-
-    function updateDropdowns() {
-        const managePlayerSel = document.getElementById("managePlayer");
-        const statPlayerSel   = document.getElementById("statPlayer");
-
-        managePlayerSel.innerHTML = "";
-        statPlayerSel.innerHTML   = "";
-
-        Object.keys(players).forEach(name => {
-            managePlayerSel.innerHTML += `<option value="${name}">${name}</option>`;
-            statPlayerSel.innerHTML   += `<option value="${name}">${name}</option>`;
-        });
-    }
-
-    function updateTable() {
-        const tbody = document.querySelector("#table tbody");
-        tbody.innerHTML = "";
-        const sorted = Object.entries(players)
-            .sort((a,b) => b[1].points - a[1].points);
-
-        sorted.forEach(([name,p], index) => {
-            let cls = "";
-            if (index === 0) cls = "gold";
-            else if (index === 1) cls = "silver";
-            else if (index === 2) cls = "bronze";
-
-            tbody.innerHTML += `
-            <tr class="${cls}">
-                <td>${index + 1}</td>
+        tbody.innerHTML += `
+            <tr>
+                <td>${idx+1}</td>
                 <td>${name}${p.team ? " ("+p.team+")" : ""}</td>
-                <td>${p.points || 0}</td>
-                <td>${p.wins   || 0}</td>
-                <td>${p.draws  || 0}</td>
-                <td>${p.losses || 0}</td>
-                <td>${p.goals  || 0}</td>
-                <td>${p.assists|| 0}</td>
-            </tr>`;
-        });
-    }
+                <td>${p.points}</td>
+                <td>${p.wins}</td>
+                <td>${p.draws}</td>
+                <td>${p.losses}</td>
+                <td>${spiele}</td>
+                <td>${p.goals}</td>
+            </tr>
+        `;
+    });
+}
 
-    function updateLogs() {
-        document.getElementById("logBox").textContent = logs.join("\n");
-    }
+/* ==== UI ==== */
+function updateDropdowns() {
+    managePlayer.innerHTML = "";
+    statPlayer.innerHTML = "";
+
+    Object.keys(players).forEach(p => {
+        managePlayer.innerHTML += `<option>${p}</option>`;
+        statPlayer.innerHTML   += `<option>${p}</option>`;
+    });
+}
+
+function updateTeamUI() {
+    const arr = Object.keys(teams);
+
+    playerTeamSelect.innerHTML = '<option value="">(kein Team)</option>';
+    managePlayerTeam.innerHTML = '<option value="">(kein Team)</option>';
+    teamResultSelect.innerHTML = '<option value="">Team wählen</option>';
+    manageTeam.innerHTML = "";
+
+    arr.forEach(t => {
+        playerTeamSelect.innerHTML += `<option>${t}</option>`;
+        managePlayerTeam.innerHTML += `<option>${t}</option>`;
+        manageTeam.innerHTML += `<option>${t}</option>`;
+        teamResultSelect.innerHTML += `<option>${t}</option>`;
+    });
+}
+
+function updateLogs() {
+    logBox.textContent = logs.join("\n");
+}
+
 </script>
-
 </body>
 </html>
+
