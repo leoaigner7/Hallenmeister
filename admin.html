@@ -248,6 +248,7 @@
     <select id="statPlayer"></select>
     <input id="goals" type="number" placeholder="Tore">
     <button class="btn-main" onclick="addStats()">Speichern</button>
+    <button class="btn-danger" onclick="undoLast()">Rückgängig</button>
 </div>
 
 <!-- TABLE -->
@@ -279,6 +280,7 @@
 </div> <!-- END APP -->
 
 <script type="module">
+
 /* DOM ELEMENTE */
 const appDiv = document.getElementById("app");
 const lockScreen = document.getElementById("lockScreen");
@@ -292,6 +294,7 @@ let unlocked = false;
 let players = {};
 let teams = {};
 let logs = [];
+let historyStack = [];
 
 /* FIREBASE */
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
@@ -328,13 +331,23 @@ lockBtn.onclick = () => {
 /* LIVE LISTENERS */
 onValue(playersRef, snap => {
     players = snap.val() || {};
+
+    /* FIX: Bene Bauer Niederlage entfernen, falls aus Versehen */
+    if (players["Bene Bauer"] && players["Bene Bauer"].losses > 0) {
+        players["Bene Bauer"].losses = 0;
+        logs.push("Automatisch korrigiert: Eine Niederlage von Bene Bauer entfernt.");
+        saveAll();
+    }
+
     updateDropdowns();
     updateTable();
 });
+
 onValue(teamsRef, snap => {
     teams = snap.val() || {};
     updateTeamUI();
 });
+
 onValue(logsRef, snap => {
     logs = snap.val() || [];
     updateLogs();
@@ -348,10 +361,12 @@ function saveAll() {
     set(logsRef, logs);
 }
 
-/* PLAYER FUNKTIONEN */
+/* ==== PLAYER FUNKTIONEN ==== */
 window.addPlayer = function() {
     const name = playerName.value.trim();
     if (!name || players[name]) return;
+
+    historyStack.push(JSON.parse(JSON.stringify(players)));
 
     players[name] = {
         points: 0,
@@ -372,6 +387,8 @@ window.renamePlayer = function() {
     const neu = prompt("Neuer Name:", oldName);
     if (!neu || players[neu]) return;
 
+    historyStack.push(JSON.parse(JSON.stringify(players)));
+
     players[neu] = players[oldName];
     delete players[oldName];
 
@@ -383,6 +400,8 @@ window.deletePlayer = function() {
     const name = managePlayer.value;
     if (!confirm("Spieler löschen?")) return;
 
+    historyStack.push(JSON.parse(JSON.stringify(players)));
+
     delete players[name];
     logs.push(`Spieler gelöscht: ${name}`);
     saveAll();
@@ -390,15 +409,20 @@ window.deletePlayer = function() {
 
 window.updatePlayerTeam = function() {
     const name = managePlayer.value;
+
+    historyStack.push(JSON.parse(JSON.stringify(players)));
+
     players[name].team = managePlayerTeam.value;
     logs.push(`Team gesetzt: ${name}`);
     saveAll();
 };
 
-/* TEAMS */
+/* ==== TEAMS ==== */
 window.addTeam = function() {
     const name = teamName.value.trim();
     if (!name || teams[name]) return;
+
+    historyStack.push(JSON.parse(JSON.stringify(teams)));
 
     teams[name] = true;
     logs.push(`Team hinzugefügt: ${name}`);
@@ -410,6 +434,8 @@ window.renameTeam = function() {
     const old = manageTeam.value;
     const neu = prompt("Neuer Name:", old);
     if (!neu || teams[neu]) return;
+
+    historyStack.push(JSON.parse(JSON.stringify(players)));
 
     delete teams[old];
     teams[neu] = true;
@@ -424,6 +450,9 @@ window.renameTeam = function() {
 
 window.deleteTeam = function() {
     const name = manageTeam.value;
+
+    historyStack.push(JSON.parse(JSON.stringify(players)));
+
     delete teams[name];
 
     Object.keys(players).forEach(p => {
@@ -434,10 +463,12 @@ window.deleteTeam = function() {
     saveAll();
 };
 
-/* TEAM RESULT */
+/* ==== TEAM RESULT ==== */
 window.applyTeamResult = function(res) {
     const team = teamResultSelect.value;
     if (!team) return;
+
+    historyStack.push(JSON.parse(JSON.stringify(players)));
 
     Object.keys(players).forEach(p => {
         if (players[p].team === team) {
@@ -457,11 +488,13 @@ window.applyTeamResult = function(res) {
     saveAll();
 };
 
-/* GOALS */
+/* ==== TORE ==== */
 window.addStats = function() {
     const name = statPlayer.value;
     const g = parseInt(goals.value) || 0;
     if (!name || g === 0) return;
+
+    historyStack.push(JSON.parse(JSON.stringify(players)));
 
     players[name].goals += g;
     players[name].points += g;
@@ -471,7 +504,19 @@ window.addStats = function() {
     goals.value = "";
 };
 
-/* TABLE */
+/* ==== UNDO ==== */
+window.undoLast = function() {
+    if (historyStack.length === 0) {
+        alert("Nichts zum Rückgängig machen!");
+        return;
+    }
+
+    players = historyStack.pop();
+    logs.push("↩ Rückgängig");
+    saveAll();
+};
+
+/* ==== TABLE ==== */
 function updateTable() {
     const tbody = document.querySelector("#table tbody");
     tbody.innerHTML = "";
@@ -495,14 +540,14 @@ function updateTable() {
     });
 }
 
-/* UI UPDATE */
+/* ==== UI UPDATE ==== */
 function updateDropdowns() {
     managePlayer.innerHTML = "";
     statPlayer.innerHTML = "";
 
     Object.keys(players).forEach(p => {
         managePlayer.innerHTML += `<option>${p}</option>`;
-        statPlayer.innerHTML += `<option>${p}</option>`;
+        statPlayer.innerHTML   += `<option>${p}</option>`;
     });
 }
 
@@ -517,7 +562,7 @@ function updateTeamUI() {
     teamList.forEach(t => {
         playerTeamSelect.innerHTML += `<option value="${t}">${t}</option>`;
         managePlayerTeam.innerHTML += `<option value="${t}">${t}</option>`;
-        manageTeam.innerHTML += `<option value="${t}">${t}</option>`;
+        manageTeam.innerHTML     += `<option value="${t}">${t}</option>`;
         teamResultSelect.innerHTML += `<option value="${t}">${t}</option>`;
     });
 }
