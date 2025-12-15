@@ -268,12 +268,19 @@
         <option value="">Team wählen</option>
     </select>
 
-    <div id="bulkPlayerList" style="margin-top:10px;"></div>
-
-    <button class="btn-main" onclick="assignPlayersToTeam()">
-        Ausgewählte Spieler zuweisen
+    <button class="btn-main" onclick="toggleBulkPlayers()" style="margin-top:8px;">
+        Spieler auswählen ▼
     </button>
+
+    <div id="bulkWrapper" style="display:none; margin-top:10px;">
+        <div id="bulkPlayerList"></div>
+
+        <button class="btn-main" onclick="assignPlayersToTeam()" style="margin-top:10px;">
+            Ausgewählte Spieler zuweisen
+        </button>
+    </div>
 </div>
+
 
 <!-- TEAMS -->
 <div class="card">
@@ -628,7 +635,10 @@ function updateLogs() {
     const box = document.getElementById("bulkPlayerList");
     if (!box) return;
 
-    box.innerHTML = "";
+   box.innerHTML = "";
+box.style.maxHeight = "220px";
+box.style.overflowY = "auto";
+
     Object.keys(players).forEach(p => {
         box.innerHTML += `
             <label style="display:block;margin-bottom:4px;">
@@ -665,10 +675,15 @@ window.assignPlayersToTeam = function () {
 
     saveAll();
 };
+window.toggleBulkPlayers = function () {
+    const box = document.getElementById("bulkWrapper");
+    box.style.display = box.style.display === "none" ? "block" : "none";
+};
 
 </script>
 
 </body>
 </html>
+
 
 
