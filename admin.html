@@ -7,181 +7,668 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-body{font-family:Inter,sans-serif;background:#f3f4f6;margin:0;padding:20px}
-.app{max-width:1100px;margin:auto}
-.card{background:#fff;border-radius:12px;padding:18px;margin-bottom:16px;border:1px solid #e5e7eb}
-button{padding:12px 14px;border-radius:10px;border:none;cursor:pointer;font-weight:600;margin-top:6px}
-.btn-main{background:#0047ab;color:#fff}
-.btn-danger{background:#fef2f2;color:#b91c1c;border:1px solid #fca5a5}
-input,select{width:100%;padding:9px;border-radius:8px;border:1px solid #ddd;background:#f9fafb}
-.hero{background:linear-gradient(135deg,#c8102e,#0047ab);color:#fff;padding:20px;border-radius:14px;margin-bottom:20px}
-table{width:100%;border-collapse:collapse;min-width:700px}
-th,td{padding:10px 8px;border-bottom:1px solid #ddd;text-align:center}
-th{background:#eef2ff;font-size:.8rem;text-transform:uppercase}
-tr.gold{background:#fff7b0}
-tr.silver{background:#e5e7eb}
-tr.bronze{background:#ffd7c2}
-@media(max-width:600px){body{padding:10px}button{width:100%}}
+    :root {
+        --bg: #f3f4f6;
+        --card: #ffffff;
+        --border: #e5e7eb;
+        --text: #111827;
+        --text-soft: #6b7280;
+        --red: #c8102e;
+        --blue: #0047ab;
+        --blue-soft: #e0edff;
+        --danger: #b91c1c;
+        --danger-soft: #fef2f2;
+    }
+
+    body {
+        font-family: "Inter", sans-serif;
+        background: #f3f4f6;
+        margin: 0;
+        padding: 20px;
+    }
+
+    .app { 
+        max-width: 1100px; 
+        margin: auto; 
+    }
+
+    /* LOCK SCREEN */
+    #lockScreen {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0,0,0,0.7);
+        z-index: 999;
+    }
+
+    #lockCard {
+        background: #111827;
+        padding: 25px;
+        border-radius: 12px;
+        width: 90%;
+        max-width: 320px;
+        color: white;
+        text-align: center;
+    }
+
+    /* HEADER */
+    .hero {
+        background: linear-gradient(135deg, var(--red), var(--blue));
+        color: white;
+        padding: 20px;
+        border-radius: 14px;
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+
+    .logo-wrap {
+        width: 70px;
+        height: 70px;
+        background: white;
+        border-radius: 10px;
+        padding: 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .logo-wrap img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+
+    /* CARDS */
+    .card {
+        background: white;
+        border-radius: 12px;
+        padding: 18px;
+        margin-bottom: 16px;
+        border: 1px solid #e5e7eb;
+    }
+
+    .field-row {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    input, select {
+        width: 100%;
+        padding: 9px;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        background: #f9fafb;
+    }
+
+    button {
+        padding: 12px 14px;
+        border-radius: 10px;
+        border: none;
+        cursor: pointer;
+        font-weight: 600;
+        margin-top: 6px;
+    }
+
+    .btn-main {
+        background: var(--blue);
+        color: white;
+    }
+
+    .btn-danger {
+        background: var(--danger-soft);
+        color: var(--danger);
+        border: 1px solid #fca5a5;
+    }
+
+    /* TABLE */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 700px; /* macht Mobilscroll möglich */
+    }
+
+    th, td {
+        padding: 10px 8px;
+        border-bottom: 1px solid #ddd;
+        text-align: center;
+    }
+
+    th {
+        background: #eef2ff;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+    }
+
+    .card table-container {
+        overflow-x: auto;
+    }
+
+    tr.gold   { background: #fff7b0; }
+    tr.silver { background: #e5e7eb; }
+    tr.bronze { background: #ffd7c2; }
+
+    /* ==============================
+       📱 MOBILVERSION (Smartphones)
+       ============================== */
+    @media (max-width: 600px) {
+
+        body {
+            padding: 10px;
+        }
+
+        .hero {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .logo-wrap {
+            width: 60px;
+            height: 60px;
+        }
+
+        .card {
+            padding: 14px;
+        }
+
+        .field-row {
+            flex-direction: column;
+        }
+
+        button {
+            width: 100%;
+        }
+
+        table {
+            font-size: 0.8rem;
+        }
+
+        .card {
+            overflow-x: auto;
+        }
+    }
+
+    /* ==============================
+       📱 TABLET VERSION 
+       ============================== */
+    @media (max-width: 900px) {
+
+        .hero h2 {
+            font-size: 1.4rem;
+        }
+
+        .card {
+            padding: 16px;
+        }
+    }
+
 </style>
+
 </head>
 
 <body>
 
-<!-- LOGIN -->
+<!-- LOCKSCREEN -->
 <div id="lockScreen">
-  <div class="card" style="max-width:320px;margin:auto;text-align:center">
-    <h2>Admin Login</h2>
-    <input id="lockInput" type="password">
-    <button class="btn-main" id="lockBtn">Entsperren</button>
-    <p id="lockError" style="color:#f87171"></p>
-  </div>
+    <div id="lockCard">
+        <h2>Admin Login</h2>
+        <p>Passwort eingeben:</p>
+        <input id="lockInput" type="password">
+        <button id="lockBtn">Entsperren</button>
+        <p id="lockError" style="color:#f87171; font-size:0.9rem;"></p>
+    </div>
 </div>
 
+<!-- APP -->
 <div id="app" class="app" style="display:none">
 
 <header class="hero">
-  <h2>Hallenmeister Admin</h2>
-  <small>Sieg 3 • Unentschieden 1 • Tor 1</small>
+    <div style="display:flex; gap:18px; align-items:center;">
+        <div class="logo-wrap"><img src="logo.png"></div>
+        <div>
+            <h2 style="margin:0;">Hallenmeister Admin</h2>
+            <small>Sieg 3 • Unentschieden 1 • Tor 1</small>
+        </div>
+    </div>
 </header>
 
-<!-- SPIELER -->
+<!-- PLAYER ADD -->
 <div class="card">
-  <h3>Spieler hinzufügen</h3>
-  <input id="playerName" placeholder="Spielername">
-  <select id="playerTeamSelect"><option value="">(kein Team)</option></select>
-  <button class="btn-main" onclick="addPlayer()">Hinzufügen</button>
+    <h3>Spieler hinzufügen</h3>
+    <div class="field-row">
+        <input id="playerName" placeholder="Spielername">
+        <select id="playerTeamSelect"><option value="">(kein Team)</option></select>
+    </div>
+    <button class="btn-main" onclick="addPlayer()">Hinzufügen</button>
+</div>
+
+<!-- PLAYER MANAGE -->
+<div class="card">
+    <h3>Spieler verwalten</h3>
+    <select id="managePlayer"></select>
+    <div class="field-row">
+        <select id="managePlayerTeam"><option value="">(kein Team)</option></select>
+    </div>
+    <button class="btn-main" onclick="updatePlayerTeam()">Team setzen</button>
+    <button class="btn-main" onclick="renamePlayer()">Umbenennen</button>
+    <button class="btn-danger" onclick="deletePlayer()">Löschen</button>
+</div>
+<!-- MEHRFACH TEAMZUWEISUNG -->
+<div class="card">
+    <h3>Mehrere Spieler gleichzeitig ins Team setzen</h3>
+
+    <select id="bulkTeamSelect">
+        <option value="">Team wählen</option>
+    </select>
+
+    <div id="bulkPlayerList" style="margin-top:10px;"></div>
+
+    <button class="btn-main" onclick="assignPlayersToTeam()">
+        Ausgewählte Spieler zuweisen
+    </button>
 </div>
 
 <!-- TEAMS -->
 <div class="card">
-  <h3>Teams verwalten</h3>
-  <input id="teamName" placeholder="Teamname">
-  <button class="btn-main" onclick="addTeam()">Team hinzufügen</button>
+    <h3>Teams verwalten</h3>
+    <div class="field-row">
+        <input id="teamName" placeholder="Teamname">
+        <button class="btn-main" onclick="addTeam()">Team hinzufügen</button>
+    </div>
+
+    <select id="manageTeam"></select>
+    <button class="btn-main" onclick="renameTeam()">Umbenennen</button>
+    <button class="btn-danger" onclick="deleteTeam()">Team löschen</button>
 </div>
 
-<!-- NEU: MEHRFACH TEAMZUWEISUNG -->
+<!-- TEAM RESULT -->
 <div class="card">
-  <h3>Mehrere Spieler gleichzeitig ins Team setzen</h3>
-  <select id="bulkTeamSelect">
-    <option value="">Team wählen</option>
-  </select>
+    <h3>Team-Ergebnis</h3>
+    <select id="teamResultSelect"><option value="">Team wählen</option></select>
 
-  <div id="playerCheckboxes" style="margin:10px 0"></div>
-
-  <button class="btn-main" onclick="assignPlayersToTeam()">
-    Ausgewählte Spieler ins Team setzen
-  </button>
+    <button class="btn-main" onclick="applyTeamResult('g')">Sieg (+3)</button>
+    <button class="btn-main" onclick="applyTeamResult('u')">Unentschieden (+1)</button>
+    <button class="btn-danger" onclick="applyTeamResult('v')">Niederlage</button>
 </div>
 
-<!-- TABELLE -->
+<!-- GOALS -->
 <div class="card">
-  <h3>Tabelle</h3>
-  <table>
-    <thead>
-      <tr>
-        <th>#</th><th>Spieler</th><th>Punkte</th>
-        <th>S</th><th>U</th><th>N</th><th>Spiele</th><th>Tore</th>
-      </tr>
-    </thead>
-    <tbody id="tableBody"></tbody>
-  </table>
+    <h3>Tore eintragen</h3>
+    <select id="statPlayer"></select>
+    <input id="goals" type="number" placeholder="Tore">
+    <button class="btn-main" onclick="addStats()">Speichern</button>
+    <button class="btn-danger" onclick="undoLast()">Rückgängig</button>
 </div>
 
+<!-- TABLE -->
+<div class="card">
+    <h3>Tabelle</h3>
+    <table id="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Spieler</th>
+                <th>Punkte</th>
+                <th>S</th>
+                <th>U</th>
+                <th>N</th>
+                <th>Spiele</th>
+                <th>Tore</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
 </div>
+
+<!-- LOGS -->
+<div class="card">
+    <h3>Logs</h3>
+    <pre id="logBox"></pre>
+</div>
+
+</div> <!-- END APP -->
 
 <script type="module">
-import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import {getDatabase,ref,onValue,set} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-const firebaseConfig={
- apiKey:"AIzaSyD6e3gVyYhC3XGr0fXnbONltHaQXITsPW8",
- databaseURL:"https://hallenmeister-jfg-default-rtdb.firebaseio.com"
+let unlocked = false;
+let historyStack = [];
+let players = {};
+let teams = {};
+let logs = [];
+const appDiv = document.getElementById("app");
+
+const ADMIN_PASSWORD = "1234";
+
+/* FIREBASE */
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyD6e3gVyYhC3XGr0fXnbONltHaQXITsPW8",
+  authDomain: "hallenmeister-jfg.firebaseapp.com",
+  databaseURL: "https://hallenmeister-jfg-default-rtdb.firebaseio.com",
+  projectId: "hallenmeister-jfg",
+  storageBucket: "hallenmeister-jfg.firebasestorage.app",
+  messagingSenderId: "116609969538",
+  appId: "1:116609969538:web:e00d5b82ac49609aae339b"
 };
 
-const appFB=initializeApp(firebaseConfig);
-const db=getDatabase(appFB);
-const playersRef=ref(db,"players");
-const teamsRef=ref(db,"teams");
+const appFB = initializeApp(firebaseConfig);
+const db  = getDatabase(appFB);
 
-let players={},teams={},unlocked=false;
+const playersRef = ref(db, "players");
+const teamsRef = ref(db, "teams");
+const logsRef = ref(db, "logs");
 
-lockBtn.onclick=()=>{
-  if(lockInput.value==="1234"){
-    unlocked=true;
-    lockScreen.style.display="none";
-    app.style.display="block";
-  } else lockError.textContent="Falsches Passwort";
+/* LOGIN */
+lockBtn.onclick = () => {
+    if (lockInput.value === ADMIN_PASSWORD) {
+        unlocked = true;
+        lockScreen.style.display = "none";
+        appDiv.style.display = "block";
+    } else {
+        lockError.textContent = "Falsches Passwort!";
+    }
 };
 
-onValue(playersRef,s=>{players=s.val()||{};renderPlayers();renderTable();});
-onValue(teamsRef,s=>{teams=s.val()||{};renderTeams();});
+/* Live Firebase */
+onValue(playersRef, snap => {
+    players = snap.val() || {};
+    updateDropdowns();
+    updateTable();
+    renderBulkPlayers(); // NEU
+});
 
-function save(){if(unlocked){set(playersRef,players);set(teamsRef,teams)}}
 
-window.addPlayer=()=>{
-  const n=playerName.value.trim();
-  if(!n||players[n])return;
-  players[n]={points:0,wins:0,draws:0,losses:0,goals:0,team:playerTeamSelect.value||""};
-  playerName.value="";
-  save();
-};
+onValue(teamsRef, snap => {
+    teams = snap.val() || {};
+    updateTeamUI();
+});
 
-window.addTeam=()=>{
-  const t=teamName.value.trim();
-  if(!t||teams[t])return;
-  teams[t]=true;
-  teamName.value="";
-  save();
-};
+onValue(logsRef, snap => {
+    logs = snap.val() || [];
+    updateLogs();
+});
 
-function renderTeams(){
-  bulkTeamSelect.innerHTML='<option value="">Team wählen</option>';
-  playerTeamSelect.innerHTML='<option value="">(kein Team)</option>';
-  Object.keys(teams).forEach(t=>{
-    bulkTeamSelect.innerHTML+=`<option>${t}</option>`;
-    playerTeamSelect.innerHTML+=`<option>${t}</option>`;
-  });
+/* SAVE */
+function saveAll() {
+    if (!unlocked) return;
+    set(playersRef, players);
+    set(teamsRef, teams);
+    set(logsRef, logs);
 }
 
-function renderPlayers(){
-  playerCheckboxes.innerHTML="";
-  Object.keys(players).forEach(p=>{
-    playerCheckboxes.innerHTML+=`
-      <label style="display:block">
-        <input type="checkbox" value="${p}">
-        ${p} (${players[p].team||"kein Team"})
-      </label>`;
-  });
-}
-
-window.assignPlayersToTeam=()=>{
-  const team=bulkTeamSelect.value;
-  if(!team)return alert("Team wählen");
-  const selected=[...playerCheckboxes.querySelectorAll("input:checked")].map(c=>c.value);
-  if(!selected.length)return alert("Spieler auswählen");
-  selected.forEach(p=>players[p].team=team);
-  save();
+/* ==== UNDO ==== */
+window.undoLast = function() {
+    if (!unlocked) return;
+    if (historyStack.length === 0) {
+        alert("Nichts zum Rückgängig machen!");
+        return;
+    }
+    players = historyStack.pop();
+    logs.push("↩ Rückgängig gemacht");
+    saveAll();
 };
 
-function renderTable(){
-  tableBody.innerHTML="";
-  Object.entries(players)
-  .sort((a,b)=>b[1].points-a[1].points)
-  .forEach(([n,p],i)=>{
-    tableBody.innerHTML+=`
-      <tr class="${i==0?'gold':i==1?'silver':i==2?'bronze':''}">
-        <td>${i+1}</td>
-        <td>${n}${p.team?` (${p.team})`:""}</td>
-        <td>${p.points}</td>
-        <td>${p.wins}</td>
-        <td>${p.draws}</td>
-        <td>${p.losses}</td>
-        <td>${p.wins+p.draws+p.losses}</td>
-        <td>${p.goals}</td>
-      </tr>`;
-  });
+/* ==== PLAYER ==== */
+window.addPlayer = function() {
+    const name = playerName.value.trim();
+    if (!name || players[name]) return;
+
+    historyStack.push(JSON.parse(JSON.stringify(players)));
+
+    players[name] = {
+        points: 0,
+        wins: 0,
+        draws: 0,
+        losses: 0,
+        goals: 0,
+        team: playerTeamSelect.value || ""
+    };
+
+    logs.push(`Spieler hinzugefügt: ${name}`);
+    saveAll();
+    playerName.value = "";
+};
+
+window.renamePlayer = function() {
+    const oldName = managePlayer.value;
+    const neu = prompt("Neuer Name:", oldName);
+    if (!neu || players[neu]) return;
+
+    historyStack.push(JSON.parse(JSON.stringify(players)));
+
+    players[neu] = players[oldName];
+    delete players[oldName];
+
+    logs.push(`Umbenannt: ${oldName} → ${neu}`);
+    saveAll();
+};
+
+window.deletePlayer = function() {
+    const name = managePlayer.value;
+    if (!confirm("Spieler löschen?")) return;
+
+    historyStack.push(JSON.parse(JSON.stringify(players)));
+
+    delete players[name];
+    logs.push(`Spieler gelöscht: ${name}`);
+    saveAll();
+};
+
+window.updatePlayerTeam = function() {
+    const name = managePlayer.value;
+
+    historyStack.push(JSON.parse(JSON.stringify(players)));
+
+    players[name].team = managePlayerTeam.value;
+    logs.push(`Team geändert: ${name}`);
+    saveAll();
+};
+
+/* ==== TEAMS ==== */
+
+window.addTeam = function() {
+    const name = teamName.value.trim();
+    if (!name || teams[name]) return;
+
+    historyStack.push(JSON.parse(JSON.stringify(players)));
+
+    teams[name] = true;
+    logs.push(`Team hinzugefügt: ${name}`);
+    saveAll();
+
+    teamName.value = "";
+};
+
+window.renameTeam = function() {
+    const old = manageTeam.value;
+    const neu = prompt("Neuer Name:", old);
+    if (!neu || teams[neu]) return;
+
+    historyStack.push(JSON.parse(JSON.stringify(players)));
+
+    delete teams[old];
+    teams[neu] = true;
+
+    // alle Spieler aktualisieren
+    Object.keys(players).forEach(p => {
+        if (players[p].team === old) players[p].team = neu;
+    });
+
+    logs.push(`Team umbenannt: ${old} → ${neu}`);
+    saveAll();
+};
+
+window.deleteTeam = function() {
+    const name = manageTeam.value;
+
+    historyStack.push(JSON.parse(JSON.stringify(players)));
+
+    delete teams[name];
+
+    Object.keys(players).forEach(p => {
+        if (players[p].team === name) players[p].team = "";
+    });
+
+    logs.push(`Team gelöscht: ${name}`);
+    saveAll();
+};
+
+/* ==== TEAM RESULT ==== */
+/* JETZT 100% richtig: Niederlage = +1 Loss, KEINE Punkte */
+window.applyTeamResult = function(res) {
+    const team = teamResultSelect.value;
+    if (!team) return;
+
+    historyStack.push(JSON.parse(JSON.stringify(players)));
+
+    Object.keys(players).forEach(p => {
+        if (players[p].team === team) {
+
+            if (res === "g") {
+                players[p].wins++;
+                players[p].points += 3;
+
+            } else if (res === "u") {
+                players[p].draws++;
+                players[p].points += 1;
+
+            } else if (res === "v") {
+                players[p].losses++; // korrekt
+            }
+        }
+    });
+
+    logs.push(`Team-Ergebnis ${team}: ${res}`);
+    saveAll();
+};
+
+/* ==== GOALS ==== */
+window.addStats = function() {
+    const name = statPlayer.value;
+    const g = parseInt(goals.value) || 0;
+    if (!name || g === 0) return;
+
+    historyStack.push(JSON.parse(JSON.stringify(players)));
+
+    players[name].goals += g;
+    players[name].points += g;
+
+    logs.push(`Tore: ${name} +${g}`);
+    saveAll();
+    goals.value = "";
+};
+
+/* ==== TABLE ==== */
+function updateTable() {
+    const tbody = document.querySelector("#table tbody");
+    tbody.innerHTML = "";
+
+    const sorted = Object.entries(players)
+        .sort((a,b) => b[1].points - a[1].points);
+
+    sorted.forEach(([name,p], idx) => {
+        const spiele = p.wins + p.draws + p.losses;
+
+        tbody.innerHTML += `
+            <tr class="${idx===0?'gold':idx===1?'silver':idx===2?'bronze':''}">
+                <td>${idx+1}</td>
+                <td>${name}${p.team ? " ("+p.team+")" : ""}</td>
+                <td>${p.points}</td>
+                <td>${p.wins}</td>
+                <td>${p.draws}</td>
+                <td>${p.losses}</td>
+                <td>${spiele}</td>
+                <td>${p.goals}</td>
+            </tr>`;
+    });
 }
+
+/* ==== UI ==== */
+function updateDropdowns() {
+    managePlayer.innerHTML = "";
+    statPlayer.innerHTML = "";
+
+    Object.keys(players).forEach(p => {
+        managePlayer.innerHTML += `<option>${p}</option>`;
+        statPlayer.innerHTML += `<option>${p}</option>`;
+    });
+}
+
+function updateTeamUI() {
+    const teamList = Object.keys(teams);
+
+    playerTeamSelect.innerHTML = '<option value="">(kein Team)</option>';
+    managePlayerTeam.innerHTML = '<option value="">(kein Team)</option>';
+    teamResultSelect.innerHTML = '<option value="">Team wählen</option>';
+    manageTeam.innerHTML = "";
+
+    teamList.forEach(t => {
+        playerTeamSelect.innerHTML += `<option value="${t}">${t}</option>`;
+        managePlayerTeam.innerHTML += `<option value="${t}">${t}</option>`;
+        manageTeam.innerHTML += `<option value="${t}">${t}</option>`;
+        teamResultSelect.innerHTML += `<option value="${t}">${t}</option>`;
+    });
+}
+
+function updateLogs() {
+    logBox.textContent = logs.join("\n");
+}
+
+
+  function renderBulkPlayers() {
+    const box = document.getElementById("bulkPlayerList");
+    if (!box) return;
+
+    box.innerHTML = "";
+    Object.keys(players).forEach(p => {
+        box.innerHTML += `
+            <label style="display:block;margin-bottom:4px;">
+                <input type="checkbox" value="${p}"> ${p}
+            </label>
+        `;
+    });
+}
+
+function renderBulkTeams() {
+    const sel = document.getElementById("bulkTeamSelect");
+    if (!sel) return;
+
+    sel.innerHTML = '<option value="">Team wählen</option>';
+    Object.keys(teams).forEach(t => {
+        sel.innerHTML += `<option value="${t}">${t}</option>`;
+    });
+}
+
+window.assignPlayersToTeam = function () {
+    const team = document.getElementById("bulkTeamSelect").value;
+    if (!team) {
+        alert("Bitte Team auswählen");
+        return;
+    }
+
+    historyStack.push(JSON.parse(JSON.stringify(players)));
+
+    document
+        .querySelectorAll("#bulkPlayerList input:checked")
+        .forEach(cb => {
+            players[cb.value].team = team;
+        });
+
+    saveAll();
+};
+
 </script>
 
 </body>
 </html>
+
+
