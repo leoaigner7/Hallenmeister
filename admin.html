@@ -4,126 +4,92 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Hallenmeister – Admin</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-body{
-    font-family:Inter,sans-serif;
-    background:#f3f4f6;
-    margin:0;
-    padding:20px;
-}
+body{font-family:Inter,sans-serif;background:#f3f4f6;margin:0;padding:20px}
 .app{max-width:1100px;margin:auto}
-.card{
-    background:#fff;
-    border-radius:12px;
-    padding:18px;
-    margin-bottom:16px;
-    border:1px solid #e5e7eb;
-}
-button{
-    padding:12px;
-    border-radius:10px;
-    border:none;
-    cursor:pointer;
-    font-weight:600;
-    margin-top:6px;
-}
+.card{background:#fff;border-radius:12px;padding:18px;margin-bottom:16px;border:1px solid #e5e7eb}
+button{padding:12px 14px;border-radius:10px;border:none;cursor:pointer;font-weight:600;margin-top:6px}
 .btn-main{background:#0047ab;color:#fff}
-.btn-danger{background:#fef2f2;color:#b91c1c}
-input,select{
-    width:100%;
-    padding:9px;
-    border-radius:8px;
-    border:1px solid #ddd;
-    background:#f9fafb;
-}
-.hero{
-    background:linear-gradient(135deg,#c8102e,#0047ab);
-    color:white;
-    padding:20px;
-    border-radius:14px;
-    margin-bottom:20px;
-}
-table{width:100%;border-collapse:collapse}
-th,td{padding:10px;border-bottom:1px solid #ddd;text-align:center}
-th{background:#eef2ff;font-size:.8rem}
+.btn-danger{background:#fef2f2;color:#b91c1c;border:1px solid #fca5a5}
+input,select{width:100%;padding:9px;border-radius:8px;border:1px solid #ddd;background:#f9fafb}
+.hero{background:linear-gradient(135deg,#c8102e,#0047ab);color:#fff;padding:20px;border-radius:14px;margin-bottom:20px}
+table{width:100%;border-collapse:collapse;min-width:700px}
+th,td{padding:10px 8px;border-bottom:1px solid #ddd;text-align:center}
+th{background:#eef2ff;font-size:.8rem;text-transform:uppercase}
 tr.gold{background:#fff7b0}
 tr.silver{background:#e5e7eb}
 tr.bronze{background:#ffd7c2}
-@media(max-width:600px){
-    body{padding:10px}
-    button{width:100%}
-}
+@media(max-width:600px){body{padding:10px}button{width:100%}}
 </style>
 </head>
 
 <body>
 
+<!-- LOGIN -->
 <div id="lockScreen">
-    <div class="card" style="max-width:300px;margin:auto;text-align:center">
-        <h3>Admin Login</h3>
-        <input id="lockInput" type="password">
-        <button class="btn-main" id="lockBtn">Entsperren</button>
-        <p id="lockError" style="color:#f87171"></p>
-    </div>
+  <div class="card" style="max-width:320px;margin:auto;text-align:center">
+    <h2>Admin Login</h2>
+    <input id="lockInput" type="password">
+    <button class="btn-main" id="lockBtn">Entsperren</button>
+    <p id="lockError" style="color:#f87171"></p>
+  </div>
 </div>
 
 <div id="app" class="app" style="display:none">
 
 <header class="hero">
-    <h2>Hallenmeister Admin</h2>
-    <small>Sieg 3 • Unentschieden 1 • Tor 1</small>
+  <h2>Hallenmeister Admin</h2>
+  <small>Sieg 3 • Unentschieden 1 • Tor 1</small>
 </header>
 
-<!-- Spieler hinzufügen -->
+<!-- SPIELER -->
 <div class="card">
-    <h3>Spieler hinzufügen</h3>
-    <input id="playerName" placeholder="Spielername">
-    <select id="playerTeamSelect"><option value="">(kein Team)</option></select>
-    <button class="btn-main" onclick="addPlayer()">Hinzufügen</button>
+  <h3>Spieler hinzufügen</h3>
+  <input id="playerName" placeholder="Spielername">
+  <select id="playerTeamSelect"><option value="">(kein Team)</option></select>
+  <button class="btn-main" onclick="addPlayer()">Hinzufügen</button>
 </div>
 
-<!-- Teams -->
+<!-- TEAMS -->
 <div class="card">
-    <h3>Teams verwalten</h3>
-    <input id="teamName" placeholder="Teamname">
-    <button class="btn-main" onclick="addTeam()">Team hinzufügen</button>
-    <select id="manageTeam"></select>
+  <h3>Teams verwalten</h3>
+  <input id="teamName" placeholder="Teamname">
+  <button class="btn-main" onclick="addTeam()">Team hinzufügen</button>
 </div>
 
-<!-- MEHRFACH TEAMZUWEISUNG -->
+<!-- NEU: MEHRFACH TEAMZUWEISUNG -->
 <div class="card">
-    <h3>Mehrere Spieler einem Team zuweisen</h3>
+  <h3>Mehrere Spieler gleichzeitig ins Team setzen</h3>
+  <select id="bulkTeamSelect">
+    <option value="">Team wählen</option>
+  </select>
 
-    <select id="bulkTeamSelect">
-        <option value="">Team wählen</option>
-    </select>
+  <div id="playerCheckboxes" style="margin:10px 0"></div>
 
-    <div id="playerCheckboxes" style="margin:10px 0"></div>
-
-    <button class="btn-main" onclick="assignPlayersToTeam()">Team setzen (für alle markierten)</button>
+  <button class="btn-main" onclick="assignPlayersToTeam()">
+    Ausgewählte Spieler ins Team setzen
+  </button>
 </div>
 
-<!-- Tabelle -->
+<!-- TABELLE -->
 <div class="card">
-    <h3>Tabelle</h3>
-    <table>
-        <thead>
-            <tr>
-                <th>#</th><th>Spieler</th><th>Punkte</th>
-                <th>S</th><th>U</th><th>N</th>
-                <th>Spiele</th><th>Tore</th>
-            </tr>
-        </thead>
-        <tbody id="tableBody"></tbody>
-    </table>
+  <h3>Tabelle</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>#</th><th>Spieler</th><th>Punkte</th>
+        <th>S</th><th>U</th><th>N</th><th>Spiele</th><th>Tore</th>
+      </tr>
+    </thead>
+    <tbody id="tableBody"></tbody>
+  </table>
 </div>
 
 </div>
 
 <script type="module">
-
 import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import {getDatabase,ref,onValue,set} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
@@ -140,89 +106,80 @@ const teamsRef=ref(db,"teams");
 let players={},teams={},unlocked=false;
 
 lockBtn.onclick=()=>{
-    if(lockInput.value==="1234"){
-        unlocked=true;
-        lockScreen.style.display="none";
-        app.style.display="block";
-    } else lockError.textContent="Falsches Passwort";
+  if(lockInput.value==="1234"){
+    unlocked=true;
+    lockScreen.style.display="none";
+    app.style.display="block";
+  } else lockError.textContent="Falsches Passwort";
 };
 
-onValue(playersRef,s=>{
-    players=s.val()||{};
-    renderPlayers();
-    renderTable();
-});
-onValue(teamsRef,s=>{
-    teams=s.val()||{};
-    renderTeams();
-});
+onValue(playersRef,s=>{players=s.val()||{};renderPlayers();renderTable();});
+onValue(teamsRef,s=>{teams=s.val()||{};renderTeams();});
 
-function save(){ if(unlocked){ set(playersRef,players); set(teamsRef,teams);} }
+function save(){if(unlocked){set(playersRef,players);set(teamsRef,teams)}}
 
 window.addPlayer=()=>{
-    const n=playerName.value.trim();
-    if(!n||players[n])return;
-    players[n]={points:0,wins:0,draws:0,losses:0,goals:0,team:playerTeamSelect.value||""};
-    playerName.value="";
-    save();
+  const n=playerName.value.trim();
+  if(!n||players[n])return;
+  players[n]={points:0,wins:0,draws:0,losses:0,goals:0,team:playerTeamSelect.value||""};
+  playerName.value="";
+  save();
 };
 
 window.addTeam=()=>{
-    const t=teamName.value.trim();
-    if(!t||teams[t])return;
-    teams[t]=true;
-    teamName.value="";
-    save();
+  const t=teamName.value.trim();
+  if(!t||teams[t])return;
+  teams[t]=true;
+  teamName.value="";
+  save();
 };
 
 function renderTeams(){
-    manageTeam.innerHTML="";
-    bulkTeamSelect.innerHTML='<option value="">Team wählen</option>';
-    playerTeamSelect.innerHTML='<option value="">(kein Team)</option>';
-    Object.keys(teams).forEach(t=>{
-        manageTeam.innerHTML+=`<option>${t}</option>`;
-        bulkTeamSelect.innerHTML+=`<option>${t}</option>`;
-        playerTeamSelect.innerHTML+=`<option>${t}</option>`;
-    });
+  bulkTeamSelect.innerHTML='<option value="">Team wählen</option>';
+  playerTeamSelect.innerHTML='<option value="">(kein Team)</option>';
+  Object.keys(teams).forEach(t=>{
+    bulkTeamSelect.innerHTML+=`<option>${t}</option>`;
+    playerTeamSelect.innerHTML+=`<option>${t}</option>`;
+  });
 }
 
 function renderPlayers(){
-    playerCheckboxes.innerHTML="";
-    Object.keys(players).forEach(p=>{
-        playerCheckboxes.innerHTML+=`
-        <label style="display:block">
-            <input type="checkbox" value="${p}"> ${p} (${players[p].team||"kein Team"})
-        </label>`;
-    });
+  playerCheckboxes.innerHTML="";
+  Object.keys(players).forEach(p=>{
+    playerCheckboxes.innerHTML+=`
+      <label style="display:block">
+        <input type="checkbox" value="${p}">
+        ${p} (${players[p].team||"kein Team"})
+      </label>`;
+  });
 }
 
 window.assignPlayersToTeam=()=>{
-    const team=bulkTeamSelect.value;
-    if(!team)return alert("Team wählen");
-    const sel=[...playerCheckboxes.querySelectorAll("input:checked")].map(c=>c.value);
-    if(sel.length===0)return alert("Spieler auswählen");
-
-    sel.forEach(p=>players[p].team=team);
-    save();
+  const team=bulkTeamSelect.value;
+  if(!team)return alert("Team wählen");
+  const selected=[...playerCheckboxes.querySelectorAll("input:checked")].map(c=>c.value);
+  if(!selected.length)return alert("Spieler auswählen");
+  selected.forEach(p=>players[p].team=team);
+  save();
 };
 
 function renderTable(){
-    tableBody.innerHTML="";
-    Object.entries(players)
-    .sort((a,b)=>b[1].points-a[1].points)
-    .forEach(([n,p],i)=>{
-        tableBody.innerHTML+=`
-        <tr class="${i==0?'gold':i==1?'silver':i==2?'bronze':''}">
-            <td>${i+1}</td>
-            <td>${n} (${p.team||"-"})</td>
-            <td>${p.points}</td>
-            <td>${p.wins}</td>
-            <td>${p.draws}</td>
-            <td>${p.losses}</td>
-            <td>${p.wins+p.draws+p.losses}</td>
-            <td>${p.goals}</td>
-        </tr>`;
-    });
+  tableBody.innerHTML="";
+  Object.entries(players)
+  .sort((a,b)=>b[1].points-a[1].points)
+  .forEach(([n,p],i)=>{
+    tableBody.innerHTML+=`
+      <tr class="${i==0?'gold':i==1?'silver':i==2?'bronze':''}">
+        <td>${i+1}</td>
+        <td>${n}${p.team?` (${p.team})`:""}</td>
+        <td>${p.points}</td>
+        <td>${p.wins}</td>
+        <td>${p.draws}</td>
+        <td>${p.losses}</td>
+        <td>${p.wins+p.draws+p.losses}</td>
+        <td>${p.goals}</td>
+      </tr>`;
+  });
 }
 </script>
 
