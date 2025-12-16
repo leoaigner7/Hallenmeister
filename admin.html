@@ -208,6 +208,55 @@
             padding: 16px;
         }
     }
+/* ==============================
+   📱 BULK TEAM – MOBILE FIX
+   ============================== */
+
+#bulkWrapper {
+    border-top: 1px solid #e5e7eb;
+    margin-top: 12px;
+    padding-top: 12px;
+}
+
+#bulkPlayerList {
+    max-height: 260px;
+    overflow-y: auto;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 10px;
+    background: #f9fafb;
+}
+
+#bulkPlayerList label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+#bulkPlayerList label:not(:last-child) {
+    border-bottom: 1px solid #e5e7eb;
+}
+
+#bulkPlayerList input[type="checkbox"] {
+    width: 22px;
+    height: 22px;
+}
+
+/* Mobile: größere Touch-Ziele */
+@media (max-width: 600px) {
+    #bulkPlayerList {
+        max-height: 220px;
+    }
+
+    #bulkPlayerList label {
+        padding: 14px;
+        font-size: 1.05rem;
+    }
+}
 
 </style>
 
@@ -269,7 +318,7 @@
     </select>
 
     <button class="btn-main" onclick="toggleBulkPlayers()" style="margin-top:8px;">
-        Spieler auswählen ▼
+        Spieler auswählen
     </button>
 
     <div id="bulkWrapper" style="display:none; margin-top:10px;">
@@ -630,8 +679,13 @@ function updateTeamUI() {
 
 window.toggleBulkPlayers = function () {
     const box = document.getElementById("bulkWrapper");
-    box.style.display = box.style.display === "none" ? "block" : "none";
+    const btn = event.target;
+
+    const open = box.style.display === "block";
+    box.style.display = open ? "none" : "block";
+    btn.textContent = open ? "Spieler auswählen" : "Spieler verbergen";
 };
+
 
 function renderBulkPlayers() {
     const box = document.getElementById("bulkPlayerList");
@@ -679,6 +733,7 @@ window.assignPlayersToTeam = function () {
 
 </body>
 </html>
+
 
 
 
