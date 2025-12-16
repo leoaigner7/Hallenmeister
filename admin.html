@@ -344,6 +344,10 @@ let players = {};
 let teams = {};
 let logs = [];
 const appDiv = document.getElementById("app");
+const lockBtn = document.getElementById("lockBtn");
+const lockInput = document.getElementById("lockInput");
+const lockScreen = document.getElementById("lockScreen");
+const lockError = document.getElementById("lockError");
 
 const ADMIN_PASSWORD = "1234";
 
@@ -614,6 +618,9 @@ function updateTeamUI() {
         manageTeam.innerHTML += `<option value="${t}">${t}</option>`;
         teamResultSelect.innerHTML += `<option value="${t}">${t}</option>`;
     });
+
+
+    
     // Bulk-Team Dropdown aktualisieren
 const bulk = document.getElementById("bulkTeamSelect");
 if (bulk) {
@@ -623,84 +630,29 @@ if (bulk) {
     });
 }
 
-renderBulkPlayers();
+window.toggleBulkPlayers = function () {
+    const box = document.getElementById("bulkWrapper");
+    box.style.display = box.style.display === "none" ? "block" : "none";
+};
 
-
-
-  function renderBulkPlayers() {
+function renderBulkPlayers() {
     const box = document.getElementById("bulkPlayerList");
     if (!box) return;
 
-   box.innerHTML = "";
-box.style.maxHeight = "220px";
-box.style.overflowY = "auto";
-
-    Object.keys(players).forEach(p => {
-        box.innerHTML += `
-            <label style="display:block;margin-bottom:4px;">
-                <input type="checkbox" value="${p}"> ${p}
-            </label>
-        `;
-    });
-}
-
-function renderBulkTeams() {
-    const sel = document.getElementById("bulkTeamSelect");
-    if (!sel) return;
-
-    sel.innerHTML = '<option value="">Team wählen</option>';
-    Object.keys(teams).forEach(t => {
-        sel.innerHTML += `<option value="${t}">${t}</option>`;
-    });
-}
-
-window.assignPlayersToTeam = function () {
-    const team = document.getElementById("bulkTeamSelect").value;
-    if (!team) {
-        alert("Bitte Team auswählen");
-        return;
-    }
-
-    historyStack.push(JSON.parse(JSON.stringify(players)));
-
-    document
-        .querySelectorAll("#bulkPlayerList input:checked")
-        .forEach(cb => {
-            players[cb.value].team = team;
-        });
-
-    saveAll();
-};
-window.toggleBulkPlayers = function () {
-    const box = document.getElementById("bulkWrapper");
-    box.style.display = box.style.display === "none" ? "block" : "none";
-};
-// Auf / Zu klappen
-window.toggleBulkPlayers = function () {
-    const box = document.getElementById("bulkWrapper");
-    box.style.display = box.style.display === "none" ? "block" : "none";
-};
-
-// Checkbox-Liste aufbauen
-function renderBulkPlayers() {
-    const box = document.getElementById("bulkPlayerList");
     box.innerHTML = "";
     box.style.maxHeight = "220px";
     box.style.overflowY = "auto";
 
     Object.keys(players).forEach(name => {
-        const div = document.createElement("div");
-        div.innerHTML = `
+        box.innerHTML += `
             <label style="display:flex; align-items:center; gap:8px;">
                 <input type="checkbox" value="${name}">
                 ${name}${players[name].team ? " (" + players[name].team + ")" : ""}
             </label>
         `;
-        box.appendChild(div);
     });
 }
 
-// Spieler dem Team zuweisen
 window.assignPlayersToTeam = function () {
     const team = document.getElementById("bulkTeamSelect").value;
     if (!team) {
@@ -724,10 +676,12 @@ window.assignPlayersToTeam = function () {
     renderBulkPlayers();
 };
 
+
 </script>
 
 </body>
 </html>
+
 
 
 
