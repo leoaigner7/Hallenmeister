@@ -257,12 +257,53 @@
         font-size: 1.05rem;
     }
 }
+/* ==============================
+   ✅ STATUS / FEEDBACK TOAST
+   ============================== */
+
+#statusToast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #16a34a;
+    color: white;
+    padding: 12px 18px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-10px);
+    transition: all 0.25s ease;
+    z-index: 2000;
+}
+
+/* sichtbar */
+#statusToast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Mobile: mittig */
+@media (max-width: 600px) {
+    #statusToast {
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%) translateY(-10px);
+    }
+
+    #statusToast.show {
+        transform: translateX(-50%) translateY(0);
+    }
+}
 
 </style>
 
 </head>
 
 <body>
+<div id="statusToast"></div>
 
 <!-- LOCKSCREEN -->
 <div id="lockScreen">
@@ -399,6 +440,17 @@ const lockScreen = document.getElementById("lockScreen");
 const lockError = document.getElementById("lockError");
 
 const ADMIN_PASSWORD = "1234";
+function showStatus(text, color = "#16a34a") {
+    const toast = document.getElementById("statusToast");
+    toast.textContent = text;
+    toast.style.background = color;
+    toast.classList.add("show");
+
+    clearTimeout(toast._t);
+    toast._t = setTimeout(() => {
+        toast.classList.remove("show");
+    }, 1600);
+}
 
 /* FIREBASE */
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
@@ -445,6 +497,17 @@ onValue(teamsRef, snap => {
     teams = snap.val() || {};
     updateTeamUI();
 });
+function showStatus(text, color = "#16a34a") {
+    const toast = document.getElementById("statusToast");
+    toast.textContent = text;
+    toast.style.background = color;
+    toast.classList.add("show");
+
+    clearTimeout(toast._t);
+    toast._t = setTimeout(() => {
+        toast.classList.remove("show");
+    }, 1600);
+}
 
 
 /* SAVE */
@@ -465,6 +528,8 @@ window.undoLast = function() {
     players = historyStack.pop();
     logs.push("↩ Rückgängig gemacht");
     saveAll();
+    showStatus("Rückgängig gemacht");
+
 };
 
 /* ==== PLAYER ==== */
@@ -485,6 +550,8 @@ window.addPlayer = function() {
 
     logs.push(`Spieler hinzugefügt: ${name}`);
     saveAll();
+    showStatus("Spieler hinzugefügt ✓");
+
     playerName.value = "";
 };
 
@@ -599,6 +666,8 @@ window.applyTeamResult = function(res) {
 
     logs.push(`Team-Ergebnis ${team}: ${res}`);
     saveAll();
+    showStatus("Team-Ergebnis gespeichert ✓");
+
 };
 
 /* ==== GOALS ==== */
@@ -614,6 +683,8 @@ window.addStats = function() {
 
     logs.push(`Tore: ${name} +${g}`);
     saveAll();
+    showStatus("Tore gespeichert ✓");
+
     goals.value = "";
 };
 
@@ -725,6 +796,8 @@ window.assignPlayersToTeam = function () {
     });
 
     saveAll();
+    showStatus("Spieler dem Team zugewiesen ✓");
+
     renderBulkPlayers();
 };
 
@@ -733,6 +806,7 @@ window.assignPlayersToTeam = function () {
 
 </body>
 </html>
+
 
 
 
