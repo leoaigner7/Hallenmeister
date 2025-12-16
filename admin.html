@@ -131,7 +131,7 @@
     table {
         width: 100%;
         border-collapse: collapse;
-        min-width: 700px; /* macht Mobilscroll möglich */
+        min-width: 700px;
     }
 
     th, td {
@@ -147,159 +147,100 @@
         font-size: 0.8rem;
     }
 
-    .card table-container {
-        overflow-x: auto;
-    }
-
     tr.gold   { background: #fff7b0; }
     tr.silver { background: #e5e7eb; }
     tr.bronze { background: #ffd7c2; }
 
-    /* ==============================
-       📱 MOBILVERSION (Smartphones)
-       ============================== */
     @media (max-width: 600px) {
-
-        body {
-            padding: 10px;
-        }
-
-        .hero {
-            flex-direction: column;
-            text-align: center;
-        }
-
-        .logo-wrap {
-            width: 60px;
-            height: 60px;
-        }
-
-        .card {
-            padding: 14px;
-        }
-
-        .field-row {
-            flex-direction: column;
-        }
-
-        button {
-            width: 100%;
-        }
-
-        table {
-            font-size: 0.8rem;
-        }
-
-        .card {
-            overflow-x: auto;
-        }
+        body { padding: 10px; }
+        .hero { flex-direction: column; text-align: center; }
+        .logo-wrap { width: 60px; height: 60px; }
+        .card { padding: 14px; overflow-x: auto; }
+        .field-row { flex-direction: column; }
+        button { width: 100%; }
+        table { font-size: 0.8rem; }
     }
 
-    /* ==============================
-       📱 TABLET VERSION 
-       ============================== */
     @media (max-width: 900px) {
-
-        .hero h2 {
-            font-size: 1.4rem;
-        }
-
-        .card {
-            padding: 16px;
-        }
+        .hero h2 { font-size: 1.4rem; }
+        .card { padding: 16px; }
     }
-/* ==============================
-   📱 BULK TEAM – MOBILE FIX
-   ============================== */
 
-#bulkWrapper {
-    border-top: 1px solid #e5e7eb;
-    margin-top: 12px;
-    padding-top: 12px;
-}
+    /* BULK TEAM */
+    #bulkWrapper {
+        border-top: 1px solid #e5e7eb;
+        margin-top: 12px;
+        padding-top: 12px;
+    }
 
-#bulkPlayerList {
-    max-height: 260px;
-    overflow-y: auto;
-    border: 1px solid #e5e7eb;
-    border-radius: 10px;
-    padding: 10px;
-    background: #f9fafb;
-}
-
-#bulkPlayerList label {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 10px;
-    border-radius: 8px;
-    font-size: 1rem;
-    cursor: pointer;
-}
-
-#bulkPlayerList label:not(:last-child) {
-    border-bottom: 1px solid #e5e7eb;
-}
-
-#bulkPlayerList input[type="checkbox"] {
-    width: 22px;
-    height: 22px;
-}
-
-/* Mobile: größere Touch-Ziele */
-@media (max-width: 600px) {
     #bulkPlayerList {
-        max-height: 220px;
+        max-height: 260px;
+        overflow-y: auto;
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        padding: 10px;
+        background: #f9fafb;
     }
 
     #bulkPlayerList label {
-        padding: 14px;
-        font-size: 1.05rem;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px;
+        border-radius: 8px;
+        font-size: 1rem;
+        cursor: pointer;
     }
-}
-/* ==============================
-   ✅ STATUS / FEEDBACK TOAST
-   ============================== */
 
-#statusToast {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background: #16a34a;
-    color: white;
-    padding: 12px 18px;
-    border-radius: 10px;
-    font-weight: 600;
-    font-size: 0.95rem;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-    opacity: 0;
-    pointer-events: none;
-    transform: translateY(-10px);
-    transition: all 0.25s ease;
-    z-index: 2000;
-}
+    #bulkPlayerList label:not(:last-child) {
+        border-bottom: 1px solid #e5e7eb;
+    }
 
-/* sichtbar */
-#statusToast.show {
-    opacity: 1;
-    transform: translateY(0);
-}
+    #bulkPlayerList input[type="checkbox"] {
+        width: 22px;
+        height: 22px;
+    }
 
-/* Mobile: mittig */
-@media (max-width: 600px) {
+    @media (max-width: 600px) {
+        #bulkPlayerList { max-height: 220px; }
+        #bulkPlayerList label { padding: 14px; font-size: 1.05rem; }
+    }
+
+    /* STATUS TOAST */
     #statusToast {
-        left: 50%;
-        right: auto;
-        transform: translateX(-50%) translateY(-10px);
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #16a34a;
+        color: white;
+        padding: 12px 18px;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 0.95rem;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(-10px);
+        transition: all 0.25s ease;
+        z-index: 2000;
     }
 
     #statusToast.show {
-        transform: translateX(-50%) translateY(0);
+        opacity: 1;
+        transform: translateY(0);
     }
-}
 
+    @media (max-width: 600px) {
+        #statusToast {
+            left: 50%;
+            right: auto;
+            transform: translateX(-50%) translateY(-10px);
+        }
+        #statusToast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+    }
 </style>
-
 </head>
 
 <body>
@@ -329,7 +270,6 @@
     </div>
 </header>
 
-<!-- PLAYER ADD -->
 <div class="card">
     <h3>Spieler hinzufügen</h3>
     <div class="field-row">
@@ -339,7 +279,6 @@
     <button class="btn-main" onclick="addPlayer()">Hinzufügen</button>
 </div>
 
-<!-- PLAYER MANAGE -->
 <div class="card">
     <h3>Spieler verwalten</h3>
     <select id="managePlayer"></select>
@@ -350,7 +289,7 @@
     <button class="btn-main" onclick="renamePlayer()">Umbenennen</button>
     <button class="btn-danger" onclick="deletePlayer()">Löschen</button>
 </div>
-<!-- MEHRERE SPIELER GLEICHZEITIG INS TEAM -->
+
 <div class="card">
     <h3>Mehrere Spieler gleichzeitig ins Team setzen</h3>
 
@@ -358,7 +297,7 @@
         <option value="">Team wählen</option>
     </select>
 
-<button class="btn-main" onclick="toggleBulkPlayers(this)" style="margin-top:8px;">
+    <button class="btn-main" onclick="toggleBulkPlayers(this)" style="margin-top:8px;">
         Spieler auswählen
     </button>
 
@@ -371,8 +310,6 @@
     </div>
 </div>
 
-
-<!-- TEAMS -->
 <div class="card">
     <h3>Teams verwalten</h3>
     <div class="field-row">
@@ -385,7 +322,6 @@
     <button class="btn-danger" onclick="deleteTeam()">Team löschen</button>
 </div>
 
-<!-- TEAM RESULT -->
 <div class="card">
     <h3>Team-Ergebnis</h3>
     <select id="teamResultSelect"><option value="">Team wählen</option></select>
@@ -395,7 +331,6 @@
     <button class="btn-danger" onclick="applyTeamResult('v')">Niederlage</button>
 </div>
 
-<!-- GOALS -->
 <div class="card">
     <h3>Tore eintragen</h3>
     <select id="statPlayer"></select>
@@ -404,7 +339,6 @@
     <button class="btn-danger" onclick="undoLast()">Rückgängig</button>
 </div>
 
-<!-- TABLE -->
 <div class="card">
     <h3>Tabelle</h3>
     <table id="table">
@@ -424,22 +358,43 @@
     </table>
 </div>
 
-</div> <!-- END APP -->
+</div><!-- END APP -->
 
 <script type="module">
-
-let unlocked = false;
-let historyStack = [];
-let players = {};
-let teams = {};
-let logs = [];
+/* ===== DOM (WICHTIG für module!) ===== */
 const appDiv = document.getElementById("app");
 const lockBtn = document.getElementById("lockBtn");
 const lockInput = document.getElementById("lockInput");
 const lockScreen = document.getElementById("lockScreen");
 const lockError = document.getElementById("lockError");
 
+const playerName = document.getElementById("playerName");
+const playerTeamSelect = document.getElementById("playerTeamSelect");
+
+const managePlayer = document.getElementById("managePlayer");
+const managePlayerTeam = document.getElementById("managePlayerTeam");
+
+const bulkTeamSelect = document.getElementById("bulkTeamSelect");
+const bulkWrapper = document.getElementById("bulkWrapper");
+const bulkPlayerList = document.getElementById("bulkPlayerList");
+
+const teamName = document.getElementById("teamName");
+const manageTeam = document.getElementById("manageTeam");
+
+const teamResultSelect = document.getElementById("teamResultSelect");
+
+const statPlayer = document.getElementById("statPlayer");
+const goals = document.getElementById("goals");
+
+/* ===== STATE ===== */
+let unlocked = false;
+let historyStack = [];
+let players = {};
+let teams = {};
+
 const ADMIN_PASSWORD = "1234";
+
+/* ===== TOAST ===== */
 function showStatus(text, color = "#16a34a") {
     const toast = document.getElementById("statusToast");
     toast.textContent = text;
@@ -447,12 +402,10 @@ function showStatus(text, color = "#16a34a") {
     toast.classList.add("show");
 
     clearTimeout(toast._t);
-    toast._t = setTimeout(() => {
-        toast.classList.remove("show");
-    }, 1600);
+    toast._t = setTimeout(() => toast.classList.remove("show"), 1600);
 }
 
-/* FIREBASE */
+/* ===== FIREBASE ===== */
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
@@ -471,54 +424,40 @@ const db  = getDatabase(appFB);
 
 const playersRef = ref(db, "players");
 const teamsRef = ref(db, "teams");
-const logsRef = ref(db, "logs");
 
-/* LOGIN */
+/* ===== LOGIN ===== */
 lockBtn.onclick = () => {
     if (lockInput.value === ADMIN_PASSWORD) {
         unlocked = true;
         lockScreen.style.display = "none";
         appDiv.style.display = "block";
+        showStatus("Login erfolgreich ✓");
     } else {
         lockError.textContent = "Falsches Passwort!";
     }
 };
 
-/* Live Firebase */
+/* ===== LIVE SYNC ===== */
 onValue(playersRef, snap => {
     players = snap.val() || {};
     updateDropdowns();
     updateTable();
-    renderBulkPlayers(); // NEU
+    renderBulkPlayers();
 });
-
 
 onValue(teamsRef, snap => {
     teams = snap.val() || {};
     updateTeamUI();
 });
-function showStatus(text, color = "#16a34a") {
-    const toast = document.getElementById("statusToast");
-    toast.textContent = text;
-    toast.style.background = color;
-    toast.classList.add("show");
 
-    clearTimeout(toast._t);
-    toast._t = setTimeout(() => {
-        toast.classList.remove("show");
-    }, 1600);
-}
-
-
-/* SAVE */
+/* ===== SAVE ===== */
 function saveAll() {
     if (!unlocked) return;
     set(playersRef, players);
     set(teamsRef, teams);
-    set(logsRef, logs);
 }
 
-/* ==== UNDO ==== */
+/* ===== UNDO ===== */
 window.undoLast = function() {
     if (!unlocked) return;
     if (historyStack.length === 0) {
@@ -526,13 +465,11 @@ window.undoLast = function() {
         return;
     }
     players = historyStack.pop();
-    logs.push("↩ Rückgängig gemacht");
     saveAll();
     showStatus("Rückgängig gemacht");
-
 };
 
-/* ==== PLAYER ==== */
+/* ===== PLAYER ===== */
 window.addPlayer = function() {
     const name = playerName.value.trim();
     if (!name || players[name]) return;
@@ -548,10 +485,8 @@ window.addPlayer = function() {
         team: playerTeamSelect.value || ""
     };
 
-    logs.push(`Spieler hinzugefügt: ${name}`);
     saveAll();
     showStatus("Spieler hinzugefügt ✓");
-
     playerName.value = "";
 };
 
@@ -565,8 +500,8 @@ window.renamePlayer = function() {
     players[neu] = players[oldName];
     delete players[oldName];
 
-    logs.push(`Umbenannt: ${oldName} → ${neu}`);
     saveAll();
+    showStatus("Spieler umbenannt ✓");
 };
 
 window.deletePlayer = function() {
@@ -574,24 +509,23 @@ window.deletePlayer = function() {
     if (!confirm("Spieler löschen?")) return;
 
     historyStack.push(JSON.parse(JSON.stringify(players)));
-
     delete players[name];
-    logs.push(`Spieler gelöscht: ${name}`);
+
     saveAll();
+    showStatus("Spieler gelöscht ✓", "#b91c1c");
 };
 
 window.updatePlayerTeam = function() {
     const name = managePlayer.value;
-
     historyStack.push(JSON.parse(JSON.stringify(players)));
 
     players[name].team = managePlayerTeam.value;
-    logs.push(`Team geändert: ${name}`);
+
     saveAll();
+    showStatus("Team gesetzt ✓");
 };
 
-/* ==== TEAMS ==== */
-
+/* ===== TEAMS ===== */
 window.addTeam = function() {
     const name = teamName.value.trim();
     if (!name || teams[name]) return;
@@ -599,9 +533,9 @@ window.addTeam = function() {
     historyStack.push(JSON.parse(JSON.stringify(players)));
 
     teams[name] = true;
-    logs.push(`Team hinzugefügt: ${name}`);
-    saveAll();
 
+    saveAll();
+    showStatus("Team hinzugefügt ✓");
     teamName.value = "";
 };
 
@@ -615,13 +549,12 @@ window.renameTeam = function() {
     delete teams[old];
     teams[neu] = true;
 
-    // alle Spieler aktualisieren
     Object.keys(players).forEach(p => {
         if (players[p].team === old) players[p].team = neu;
     });
 
-    logs.push(`Team umbenannt: ${old} → ${neu}`);
     saveAll();
+    showStatus("Team umbenannt ✓");
 };
 
 window.deleteTeam = function() {
@@ -630,17 +563,15 @@ window.deleteTeam = function() {
     historyStack.push(JSON.parse(JSON.stringify(players)));
 
     delete teams[name];
-
     Object.keys(players).forEach(p => {
         if (players[p].team === name) players[p].team = "";
     });
 
-    logs.push(`Team gelöscht: ${name}`);
     saveAll();
+    showStatus("Team gelöscht ✓", "#b91c1c");
 };
 
-/* ==== TEAM RESULT ==== */
-/* JETZT 100% richtig: Niederlage = +1 Loss, KEINE Punkte */
+/* ===== TEAM RESULT ===== */
 window.applyTeamResult = function(res) {
     const team = teamResultSelect.value;
     if (!team) return;
@@ -649,28 +580,17 @@ window.applyTeamResult = function(res) {
 
     Object.keys(players).forEach(p => {
         if (players[p].team === team) {
-
-            if (res === "g") {
-                players[p].wins++;
-                players[p].points += 3;
-
-            } else if (res === "u") {
-                players[p].draws++;
-                players[p].points += 1;
-
-            } else if (res === "v") {
-                players[p].losses++; // korrekt
-            }
+            if (res === "g") { players[p].wins++; players[p].points += 3; }
+            else if (res === "u") { players[p].draws++; players[p].points += 1; }
+            else if (res === "v") { players[p].losses++; }
         }
     });
 
-    logs.push(`Team-Ergebnis ${team}: ${res}`);
     saveAll();
     showStatus("Team-Ergebnis gespeichert ✓");
-
 };
 
-/* ==== GOALS ==== */
+/* ===== GOALS ===== */
 window.addStats = function() {
     const name = statPlayer.value;
     const g = parseInt(goals.value) || 0;
@@ -681,24 +601,20 @@ window.addStats = function() {
     players[name].goals += g;
     players[name].points += g;
 
-    logs.push(`Tore: ${name} +${g}`);
     saveAll();
     showStatus("Tore gespeichert ✓");
-
     goals.value = "";
 };
 
-/* ==== TABLE ==== */
+/* ===== TABLE ===== */
 function updateTable() {
     const tbody = document.querySelector("#table tbody");
     tbody.innerHTML = "";
 
-    const sorted = Object.entries(players)
-        .sort((a,b) => b[1].points - a[1].points);
+    const sorted = Object.entries(players).sort((a,b) => b[1].points - a[1].points);
 
     sorted.forEach(([name,p], idx) => {
         const spiele = p.wins + p.draws + p.losses;
-
         tbody.innerHTML += `
             <tr class="${idx===0?'gold':idx===1?'silver':idx===2?'bronze':''}">
                 <td>${idx+1}</td>
@@ -713,7 +629,7 @@ function updateTable() {
     });
 }
 
-/* ==== UI ==== */
+/* ===== UI ===== */
 function updateDropdowns() {
     managePlayer.innerHTML = "";
     statPlayer.innerHTML = "";
@@ -739,36 +655,25 @@ function updateTeamUI() {
         teamResultSelect.innerHTML += `<option value="${t}">${t}</option>`;
     });
 
-    const bulk = document.getElementById("bulkTeamSelect");
-    if (bulk) {
-        bulk.innerHTML = '<option value="">Team wählen</option>';
-        teamList.forEach(t => {
-            bulk.innerHTML += `<option value="${t}">${t}</option>`;
-        });
-    }
+    bulkTeamSelect.innerHTML = '<option value="">Team wählen</option>';
+    teamList.forEach(t => {
+        bulkTeamSelect.innerHTML += `<option value="${t}">${t}</option>`;
+    });
 }
 
-window.toggleBulkPlayers = function (btn) {
-    const box = document.getElementById("bulkWrapper");
-
-    const open = box.style.display === "block";
-    box.style.display = open ? "none" : "block";
+/* ===== BULK TEAM ===== */
+window.toggleBulkPlayers = function(btn) {
+    const open = bulkWrapper.style.display === "block";
+    bulkWrapper.style.display = open ? "none" : "block";
     btn.textContent = open ? "Spieler auswählen" : "Spieler verbergen";
 };
 
-
-
 function renderBulkPlayers() {
-    const box = document.getElementById("bulkPlayerList");
-    if (!box) return;
-
-    box.innerHTML = "";
-    box.style.maxHeight = "220px";
-    box.style.overflowY = "auto";
+    bulkPlayerList.innerHTML = "";
 
     Object.keys(players).forEach(name => {
-        box.innerHTML += `
-            <label style="display:flex; align-items:center; gap:8px;">
+        bulkPlayerList.innerHTML += `
+            <label>
                 <input type="checkbox" value="${name}">
                 ${name}${players[name].team ? " (" + players[name].team + ")" : ""}
             </label>
@@ -776,18 +681,12 @@ function renderBulkPlayers() {
     });
 }
 
-window.assignPlayersToTeam = function () {
-    const team = document.getElementById("bulkTeamSelect").value;
-    if (!team) {
-        alert("Bitte ein Team wählen");
-        return;
-    }
+window.assignPlayersToTeam = function() {
+    const team = bulkTeamSelect.value;
+    if (!team) { alert("Bitte ein Team wählen"); return; }
 
     const checked = document.querySelectorAll("#bulkPlayerList input:checked");
-    if (checked.length === 0) {
-        alert("Keine Spieler ausgewählt");
-        return;
-    }
+    if (checked.length === 0) { alert("Keine Spieler ausgewählt"); return; }
 
     historyStack.push(JSON.parse(JSON.stringify(players)));
 
@@ -797,22 +696,9 @@ window.assignPlayersToTeam = function () {
 
     saveAll();
     showStatus("Spieler dem Team zugewiesen ✓");
-
     renderBulkPlayers();
 };
-
-
 </script>
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
