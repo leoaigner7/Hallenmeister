@@ -748,14 +748,14 @@ function updateTeamUI() {
     }
 }
 
-window.toggleBulkPlayers = function () {
+window.toggleBulkPlayers = function (btn) {
     const box = document.getElementById("bulkWrapper");
-    const btn = event.target;
 
     const open = box.style.display === "block";
     box.style.display = open ? "none" : "block";
     btn.textContent = open ? "Spieler auswählen" : "Spieler verbergen";
 };
+
 
 
 function renderBulkPlayers() {
@@ -806,6 +806,7 @@ window.assignPlayersToTeam = function () {
 
 </body>
 </html>
+
 
 
 
